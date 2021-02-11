@@ -14,14 +14,15 @@ export default class Main extends Component {
   }
 
   async loadModule(module) {
-    try {
-      this._element.innerHTML = 'Carregando...'
-      const fn = await import(`../../pages${module}/`)
-      this._element.innerHTML = ''
-      new fn.default(this._element).init()
-    } catch (error) {
-      this._element.textContent = error.message
-    }
+    console.log(`../../pages${module}/`)
+    // try {
+    //   this._element.innerHTML = 'Carregando...'
+    //   const fn = await import(`../../pages${module}/`)
+    //   this._element.innerHTML = ''
+    //   new fn.default(this._element).init()
+    // } catch (error) {
+    //   this._element.textContent = error.message
+    // }
   }
 
   init() {
