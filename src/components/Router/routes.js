@@ -1,14 +1,14 @@
 export default [
   {
-    path: '/',
+    path: '/simple-observable-examples',
     component: 'observableArray'
   },
   {
-    path: '/observableArray',
+    path: '/simple-observable-examples/observableArray',
     component: 'observableArray'
   },
   {
-    path: '/computedObservable',
+    path: '/simple-observable-examples/computedObservable',
     component: 'computedObservable'
   }
 ]
