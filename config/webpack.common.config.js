@@ -14,6 +14,7 @@ module.exports = {
     shared: './src/js/so.js'
   },
   output: {
+    publicPath: "/",
     path: path.resolve(__dirname, '../dist'),
     filename: './js/[name].[contenthash].js'
   },

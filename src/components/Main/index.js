@@ -1,7 +1,8 @@
 import Component from '../../models/component';
+import { $curentPath } from '../Router/Link';
 
 export default class Main extends Component {
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT), $module) {
+  constructor(element = document.getElementById(process.env.ROOT_ELEMENT), $module = $curentPath) {
     super(element)
     this._$module = $module
   }
@@ -15,7 +16,7 @@ export default class Main extends Component {
   async loadModule(module) {
     try {
       this._element.innerHTML = 'Carregando...'
-      const fn = await import(`../../pages/${module}/`)
+      const fn = await import(`../../pages${module}/`)
       this._element.innerHTML = ''
       new fn.default(this._element).init()
     } catch (error) {
@@ -25,7 +26,7 @@ export default class Main extends Component {
 
   init() {
     this.subscribeObservable()
-    this.loadModule('observableArray')
+    this.loadModule('/observableArray')
     return this
   }
 }

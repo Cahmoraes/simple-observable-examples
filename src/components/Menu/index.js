@@ -5,10 +5,9 @@ import so from '../../js/so'
 
 export default class Menu extends Component {
 
-  constructor(element, $module) {
+  constructor(element) {
     super(element)
     this._config = { title: 'Menu' }
-    this.$_module = $module
     this.$_activeItem = so.observable()
     this._menuItems = []
     this._activeClass = 'active'
@@ -36,9 +35,7 @@ export default class Menu extends Component {
       const { target } = event
       if (target.tagName === 'A') {
         const item = target
-        const module = item.dataset.menu
         this.$_activeItem(item)
-        this.$_module(module)
       }
     })
   }
