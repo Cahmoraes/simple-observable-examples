@@ -1,0 +1,53 @@
+#observbaleArray {
+
+  #btn-cadastrar {
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    background: #913BF3;
+    border: 1px solid #913BF3;
+    border-radius: 3px;
+    color: #FFF;
+    font-weight: bold;
+    transition: background .3s ease-out;
+    text-transform: uppercase;
+  }
+
+  #btn-cadastrar:hover {
+    background: #7f25e6;
+  }
+
+  #lista {
+    margin-top: 2rem;
+    position: relative;
+
+    li {
+      padding: 0.6rem;
+      margin-bottom: 0.5rem;
+
+      &:nth-child(odd) {
+        background: #bfafd052;
+      }
+  
+      &:nth-child(even) {
+        background: #f5f5f5;
+      }
+
+      &:hover {
+        button {
+          opacity: 1;
+        }
+      }
+      
+      button {
+        transition: .1s ease-in;
+        position: absolute;
+        left: -17px;
+        background: #913BF3;
+        border: 1px solid #913BF3;
+        padding: 3px;
+        opacity: 0;
+      }
+    }
+  }
+}
