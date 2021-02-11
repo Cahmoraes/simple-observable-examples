@@ -19,7 +19,7 @@ export default class computedObservable {
       title: 'Computed Observable',
       label_1: 'Nome',
       label_2: 'Sobrenome',
-      label_3: 'Computed Value'
+      label_3: 'Valor computado'
     }
   }
 
