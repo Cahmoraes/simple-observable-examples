@@ -1,18 +1,35 @@
 import Component from '../../models/component';
 import { $curentPath } from '../Router/Link';
-const environment = (process.env.NODE_ENV || 'development').trim()
-const path = environment === 'development' ? '' : '' / '' + process.env.PRODUCTION_PATH
+import Routes from '../Router/routes'
 
 export default class Main extends Component {
   constructor(element = document.getElementById(process.env.ROOT_ELEMENT), $module = $curentPath) {
     super(element)
     this._$module = $module
+    this._routes = Routes
   }
 
   subscribeObservable() {
-    this._$module.subscribe(module => {
-      module && this.loadModule(module)
+    this._$module.subscribe(path => {
+      if (path) {
+        const module = this.findModule(path)
+        console.log({ module })
+        this.loadModule(module.component)
+      }
     })
+  }
+
+  findModule(path) {
+    console.log({ path })
+    const module = this._routes.find(route => {
+      const regEx = new RegExp(`${path}`, 'ig')
+      const match = route.path.match(regEx)
+      if (Array.isArray(match)) {
+        return true
+      }
+    })
+    if (module) return module
+    return null
   }
 
   async loadModule(module) {
