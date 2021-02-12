@@ -35,10 +35,9 @@ export default class Main extends Component {
   }
 
   async loadModule(module) {
-    const m = module.replace('/', '')
     try {
       this._element.innerHTML = 'Carregando...'
-      const fn = await import(`../../pages/${m}/`)
+      const fn = await import(`../../pages/${module}/`)
       this._element.innerHTML = ''
       new fn.default(this._element).init()
     } catch (error) {
