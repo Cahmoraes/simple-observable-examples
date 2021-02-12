@@ -13,10 +13,6 @@ module.exports = {
     },
     shared: './src/js/so.js'
   },
-  output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: './js/[name].[contenthash].js'
-  },
   devServer: {
     historyApiFallback: true
   },
