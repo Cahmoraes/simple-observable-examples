@@ -1,5 +1,7 @@
 import Component from '../../models/component';
 import { $curentPath } from '../Router/Link';
+const environment = (process.env.NODE_ENV || 'development').trim()
+const path = environment === 'development' ? '' : '/' + process.env.PRODUCTION_PATH
 
 export default class Main extends Component {
   constructor(element = document.getElementById(process.env.ROOT_ELEMENT), $module = $curentPath) {
@@ -16,7 +18,7 @@ export default class Main extends Component {
   async loadModule(module) {
     try {
       this._element.innerHTML = 'Carregando...'
-      const fn = await import(`../../pages${module}/`)
+      const fn = await import(`../../pages${path}${module}/`)
       this._element.innerHTML = ''
       new fn.default(this._element).init()
     } catch (error) {
