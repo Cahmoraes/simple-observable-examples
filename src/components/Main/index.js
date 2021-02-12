@@ -13,14 +13,13 @@ export default class Main extends Component {
     this._$module.subscribe(path => {
       if (path) {
         const module = this.findModule(path)
-        console.log({ module })
+        console.log('aqui', module)
         this.loadModule(module.component)
       }
     })
   }
 
   findModule(path) {
-    console.log({ path })
     const module = this._routes.find(route => {
       const regEx = new RegExp(`${path}`, 'ig')
       const match = route.path.match(regEx)
@@ -28,14 +27,18 @@ export default class Main extends Component {
         return true
       }
     })
-    if (module) return module
+    if (module) {
+      console.log({ module })
+      return module
+    }
     return null
   }
 
   async loadModule(module) {
+    const m = module.replace('/', '')
     try {
       this._element.innerHTML = 'Carregando...'
-      const fn = await import(`../../pages${module}/`)
+      const fn = await import(`../../pages/${m}/`)
       this._element.innerHTML = ''
       new fn.default(this._element).init()
     } catch (error) {
@@ -45,7 +48,6 @@ export default class Main extends Component {
 
   init() {
     this.subscribeObservable()
-    this.loadModule('/observableArray')
     return this
   }
 }
