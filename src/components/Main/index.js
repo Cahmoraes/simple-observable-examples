@@ -37,7 +37,7 @@ export default class Main extends Component {
   async loadComponent(component) {
     try {
       this._element.innerHTML = 'Carregando...'
-      const fn = await import(`../../pages/${component}/`)
+      const fn = await import(`./../../pages/${component}/`)
       this._element.innerHTML = ''
       new fn.default(this._element).init()
     } catch (error) {
