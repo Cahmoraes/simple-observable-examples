@@ -14,6 +14,12 @@ const main = new Main(document.getElementById(process.env.ROOT_ELEMENT)).init()
 
 const router = new Router().init()
 
+const storagedPath = localStorage.getItem('path');
+if (storagedPath) {
+  localStorage.removeItem('path');
+  main.loadComponent('/' + main.findModule(storagedPath).component)
+}
+
 router.route.subscribe(path => {
-  main.loadComponent(path)
+  main.loadComponent('/' + main.findModule(path).component)
 })

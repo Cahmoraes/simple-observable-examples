@@ -6,7 +6,7 @@ module.exports = merge(WebpackBaseConfig, {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: './js/[name].[contenthash].js',
-    publicPath: 'simple-observable-examples/'
+    publicPath: '/simple-observable-examples/'
   },
   optimization: {
     runtimeChunk: true

@@ -1,5 +1,9 @@
 export default [
   {
+    path: '/',
+    component: 'observableArray'
+  },
+  {
     path: '/simple-observable-examples',
     component: 'observableArray'
   },

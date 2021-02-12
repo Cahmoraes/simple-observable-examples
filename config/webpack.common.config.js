@@ -43,6 +43,17 @@ module.exports = {
         removeComments: true,
         collapseWhitespace: true
       }
+    }),
+    new HtmlWebpackPlugun({
+      title: '404',
+      filename: '404.html',
+      template: './src/404.html',
+      chunks: ['main', 'shared'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
     })
   ],
   module: {

@@ -20,6 +20,7 @@ export default class Main extends Component {
   }
 
   findModule(path) {
+    console.log({ path })
     const module = this._routes.find(route => {
       const regEx = new RegExp(`${path}`, 'ig')
       const match = route.path.match(regEx)
@@ -35,9 +36,11 @@ export default class Main extends Component {
   }
 
   async loadComponent(component) {
+    console.log({ component })
     try {
       this._element.innerHTML = 'Carregando...'
-      const fn = await import(`./../../pages${component}/`)
+      const c = component.replace('simple-observable-examples/', '')
+      const fn = await import(`./../../pages${c}/`)
       this._element.innerHTML = ''
       new fn.default(this._element).init()
     } catch (error) {
