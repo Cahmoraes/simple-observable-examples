@@ -15,5 +15,7 @@ const main = new Main(document.getElementById(process.env.ROOT_ELEMENT)).init()
 const router = new Router().init()
 
 router.route.subscribe(path => {
-  main.loadModule(path)
+  const p = path.replace('/', '')
+  console.log({ path, p })
+  main.loadComponent(p)
 })

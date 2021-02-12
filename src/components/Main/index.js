@@ -14,7 +14,7 @@ export default class Main extends Component {
       if (path) {
         const module = this.findModule(path)
         console.log('aqui', module)
-        this.loadModule(module.component)
+        this.loadComponent(module.component)
       }
     })
   }
@@ -34,10 +34,10 @@ export default class Main extends Component {
     return null
   }
 
-  async loadModule(module) {
+  async loadComponent(component) {
     try {
       this._element.innerHTML = 'Carregando...'
-      const fn = await import(`../../pages${module}/`)
+      const fn = await import(`../../pages/${component}/`)
       this._element.innerHTML = ''
       new fn.default(this._element).init()
     } catch (error) {
