@@ -1,27 +1,30 @@
-import so from '../../js/so';
-import Routes from './routes'
+import so from '../../js/so'
 
-import { $curentPath } from './Link'
+const initialPath = window.location.pathname.slice(1) || '/'
+
+export const $curentPath = so.observable(initialPath, function (prevValue, newValue, next) {
+  next(newValue.replace('/', ''))
+})
 
 export default class Router {
-  constructor(routes = Routes) {
+
+  constructor() {
     this._currentRoute = so.observable(window.location.pathname)
-    this._routes = routes
   }
 
   addEventListener() {
     window.addEventListener('popstate', () => {
-      if (this._currentRoute() !== this.getRoute()) {
-        this.setRoute(this.getRoute())
+      if (this._currentRoute() !== this.getWindowRoute()) {
+        $curentPath(this.getWindowRoute())
       }
     })
   }
 
   get route() {
-    return this._currentRoute
+    return $curentPath
   }
 
-  getRoute() {
+  getWindowRoute() {
     return window.location.pathname
   }
 

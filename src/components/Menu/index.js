@@ -2,6 +2,7 @@ import template from './template.html'
 import './styles'
 import Component from '../../models/component'
 import so from '../../js/so'
+import { $curentPath } from '../Router/'
 
 export default class Menu extends Component {
 
@@ -30,12 +31,13 @@ export default class Menu extends Component {
   }
 
   addEventLitenerMenu() {
-    this._element.addEventListener('click', (event) => {
-      event.preventDefault()
-      const { target } = event
-      if (target.tagName === 'A') {
-        const item = target
-        this.$_activeItem(item)
+
+    $curentPath.subscribe(path => {
+      if (path !== '/') {
+        const item = this._element.querySelector(`[href*="/${path}"]`)
+        if (item) {
+          this.$_activeItem(item)
+        }
       }
     })
   }

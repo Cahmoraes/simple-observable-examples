@@ -11,9 +11,13 @@
     transition: background .3s ease-out;
     text-transform: uppercase;
   }
-
+  
   #btn-cadastrar:hover {
     background: #7f25e6;
+  }
+  
+  [data-remove] {
+    color: #FFF;
   }
 
   #lista {

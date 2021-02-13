@@ -1,5 +1,5 @@
 import Component from '../../models/component';
-import { $curentPath } from '../Router/Link';
+import { $curentPath } from '../Router/';
 import Routes from '../Router/routes'
 
 export default class Main extends Component {
@@ -13,14 +13,12 @@ export default class Main extends Component {
     this._$module.subscribe(path => {
       if (path) {
         const module = this.findModule(path)
-        console.log('aqui', module)
         this.loadComponent(module.component)
       }
     })
   }
 
   findModule(path) {
-    console.log({ path })
     const module = this._routes.find(route => {
       const regEx = new RegExp(`${path}`, 'ig')
       const match = route.path.match(regEx)
@@ -29,23 +27,25 @@ export default class Main extends Component {
       }
     })
     if (module) {
-      console.log({ module })
       return module
     }
     return null
   }
 
   async loadComponent(component) {
-    console.log({ component })
     try {
       this._element.innerHTML = 'Carregando...'
       const c = component.replace('simple-observable-examples/', '')
-      const fn = await import(`./../../pages${c}/`)
-      this._element.innerHTML = ''
+      const fn = await import(`./../../pages/${c}/`)
+      this.cleanTemplate()
       new fn.default(this._element).init()
     } catch (error) {
       this._element.textContent = error.message
     }
+  }
+
+  cleanTemplate() {
+    this._element.innerHTML = ''
   }
 
   init() {

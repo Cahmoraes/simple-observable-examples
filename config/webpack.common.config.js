@@ -25,14 +25,14 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: './css/style.[chunkhash].css'
     }),
-    // new CopyWebpackPlugin({
-    //   patterns: [
-    //     {
-    //       from: './src/assets/',
-    //       to: './assets/'
-    //     }
-    //   ]
-    // }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './src/assets/',
+          to: './assets/'
+        }
+      ]
+    }),
     new HtmlWebpackPlugun({
       title: 'Webpack Revisão',
       filename: 'index.html',
@@ -50,6 +50,7 @@ module.exports = {
       template: './src/404.html',
       chunks: ['main', 'shared'],
       inject: true,
+      storageKey: process.env.STORAGED_PATH,
       minify: {
         removeComments: true,
         collapseWhitespace: true

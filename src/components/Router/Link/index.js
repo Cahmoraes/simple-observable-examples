@@ -1,15 +1,16 @@
-import so from '../../../js/so'
-const environment = (process.env.NODE_ENV || 'development').trim()
+import { $curentPath } from '..'
 
-export const $curentPath = so.observable()
+
+const getEnvironment = () =>
+  (process.env.NODE_ENV === 'development') ? '' : `/${process.env.PRODUCTION_PATH}`
 
 export default class Link extends HTMLAnchorElement {
   constructor() {
     super()
-    if (environment !== 'development') {
-      const path = this.getAttribute('href')
-      this.setAttribute('href', `/${process.env.PRODUCTION_PATH}${path}`)
-    }
+
+    const currentPath = this.getAttribute('href')
+    this.setAttribute('href', `${getEnvironment()}${currentPath}`)
+
     this._path = this.getAttribute('href')
   }
 
