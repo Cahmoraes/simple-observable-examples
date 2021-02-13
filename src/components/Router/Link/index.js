@@ -1,8 +1,5 @@
 import { $curentPath } from '..'
-
-
-const getEnvironment = () =>
-  (process.env.NODE_ENV === 'development') ? '' : `/${process.env.PRODUCTION_PATH}`
+import getEnvironment from '../../../js/utils/getEnvironment'
 
 export default class Link extends HTMLAnchorElement {
   constructor() {

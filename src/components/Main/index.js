@@ -19,8 +19,8 @@ export default class Main extends Component {
   }
 
   findModule(path) {
+    const regEx = new RegExp(`${path}`, 'i')
     const module = this._routes.find(route => {
-      const regEx = new RegExp(`${path}`, 'ig')
       const match = route.path.match(regEx)
       if (Array.isArray(match)) {
         return true
@@ -35,8 +35,7 @@ export default class Main extends Component {
   async loadComponent(component) {
     try {
       this._element.innerHTML = 'Carregando...'
-      const c = component.replace('simple-observable-examples/', '')
-      const fn = await import(`./../../pages/${c}/`)
+      const fn = await import(`./../../pages/${component}/`)
       this.cleanTemplate()
       new fn.default(this._element).init()
     } catch (error) {

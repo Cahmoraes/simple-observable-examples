@@ -1,18 +1,20 @@
+import getEnvironment from '../../js/utils/getEnvironment'
+
 export default [
   {
-    path: '/',
+    path: getEnvironment() || '/',
+    component: 'observable'
+  },
+  {
+    path: `${getEnvironment()}/observable`,
+    component: 'observable'
+  },
+  {
+    path: `${getEnvironment()}/observableArray`,
     component: 'observableArray'
   },
   {
-    path: '/simple-observable-examples',
-    component: 'observableArray'
-  },
-  {
-    path: '/simple-observable-examples/observableArray',
-    component: 'observableArray'
-  },
-  {
-    path: '/simple-observable-examples/computedObservable',
+    path: `${getEnvironment()}/computedObservable`,
     component: 'computedObservable'
   }
 ]

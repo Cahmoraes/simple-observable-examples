@@ -31,13 +31,14 @@ export default class Menu extends Component {
   }
 
   addEventLitenerMenu() {
-
     $curentPath.subscribe(path => {
       if (path !== '/') {
         const item = this._element.querySelector(`[href*="/${path}"]`)
         if (item) {
           this.$_activeItem(item)
         }
+      } else {
+        this.$_activeItem(this._element.querySelector(`[href]`))
       }
     })
   }
