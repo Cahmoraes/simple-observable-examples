@@ -9,23 +9,30 @@ function routerServiceMiddleware(_, newValue, next) {
 const initialPath = window.location.pathname.slice(1) || '/'
 const $router = so.observable(initialPath, routerServiceMiddleware)
 
-export default class RouterService {
+export class RouterService {
 
   constructor() {
-    throw new Error('RouterService não deve ser instanciada')
+    if (!RouterService.instance) {
+      RouterService.instance = this
+    }
+    return RouterService.instance
   }
 
-  static get router() {
+  get route() {
     return $router
   }
 
-  static setRoute(path) {
+  setRoute(path) {
     $router(path)
   }
 
-  static navigate(path) {
+  navigate(path) {
     pushState(path.replace('/', ''))
     this.setRoute(path)
   }
 
 }
+
+const routerServiceInstance = new RouterService()
+Object.freeze(routerServiceInstance)
+export default routerServiceInstance

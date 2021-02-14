@@ -21,7 +21,7 @@ export default class Router {
   }
 
   get route() {
-    return RouterService.router
+    return RouterService.route
   }
 
   getWindowRoute() {
@@ -39,7 +39,7 @@ export default class Router {
   }
 
   subscribeObservable() {
-    RouterService.router.subscribe(value => {
+    RouterService.route.subscribe(value => {
       this.setCurrentRoute(value)
     })
   }
