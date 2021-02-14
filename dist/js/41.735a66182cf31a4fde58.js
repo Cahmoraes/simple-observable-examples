@@ -1,0 +1,1 @@
+(self.webpackChunkrevisao_10_02_2021=self.webpackChunkrevisao_10_02_2021||[]).push([[41],{41:e=>{function s(){return`<h2 class="subtitle">${this.title}</h2>`}e.exports=function(e){return s.call(e,e)}}}]);

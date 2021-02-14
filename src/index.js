@@ -7,3 +7,4 @@ import Router from './components/Router'
 const router = new Router().init()
 new Menu(router).init()
 new Main(router).init()
+

@@ -31,6 +31,25 @@ input[type="text"] {
   margin-bottom: 25px;
   font-size: 1.4rem;
   line-height: 2.1rem;
+  h3 {
+    background-color: #212121;
+    color: #fff;
+    font-weight: 400;
+    max-width: max-content;
+    padding: 0 6px;
+    margin: 24px 0;
+  }
+  .code {
+    border-left: 6px solid #00458b;
+    line-height: 1.4;
+    margin: 0 0 24px;
+    max-width: 100%;
+    overflow: auto;
+    padding: 24px 0 24px 1rem;
+    width: 100%;
+    text-align: left;
+    font-family: monospace;
+  }
 }
 
 p {
