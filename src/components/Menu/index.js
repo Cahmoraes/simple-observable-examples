@@ -2,12 +2,12 @@ import so from '../../js/so'
 import template from './template.html'
 import './styles'
 import Component from '../../models/component'
-import RouterService from '../Router/router.service'
 
 export default class Menu extends Component {
 
-  constructor(element = document.getElementById('menu')) {
+  constructor(router, element = document.getElementById('menu')) {
     super(element)
+    this._router = router
     this._config = { title: 'Menu' }
     this.$_activeItem = so.observable()
     this._menuItems = []
@@ -31,7 +31,7 @@ export default class Menu extends Component {
   }
 
   addEventLitenerMenu() {
-    RouterService.router.subscribe(path => {
+    this._router.route.subscribe(path => {
       if (path !== '/') {
         const item = this._element.querySelector(`[href*="/${path}"]`)
         if (item) {

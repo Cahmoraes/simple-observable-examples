@@ -4,14 +4,15 @@ import Routes from '../Router/routes'
 
 export default class Main extends Component {
 
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
+  constructor(router, element = document.getElementById(process.env.ROOT_ELEMENT)) {
     super(element)
     this._module = null
     this._routes = Routes
+    this._router = router
   }
 
   subscribeObservable() {
-    RouterService.router.subscribe(path => {
+    this._router.route.subscribe(path => {
       if (path) {
         const module = this.findModule(path)
         this.loadModule(module)
@@ -44,8 +45,7 @@ export default class Main extends Component {
       const { component = 'notfound' } = module || 'notfound'
       this.setTitle()
       this._element.innerHTML = 'Carregando...'
-      const fn = await import(`./../../pages/${component}/`)
-      console.log(fn)
+      const fn = await import(process.env.MODULES_PATH + component)
       this.cleanTemplate()
       new fn.default(this._element).init()
     } catch (error) {
