@@ -1,5 +1,6 @@
-import { $curentPath } from '..'
 import getEnvironment from '../../../js/utils/getEnvironment'
+import pushState from '../../../js/utils/pushState'
+import RouterService from '../router.service'
 
 export default class Link extends HTMLAnchorElement {
   constructor() {
@@ -14,8 +15,8 @@ export default class Link extends HTMLAnchorElement {
   connectedCallback() {
     this.addEventListener('click', (event) => {
       event.preventDefault()
-      window.history.pushState({}, '', window.location.origin + this._path)
-      $curentPath(this._path)
+      RouterService.setRoute(this._path)
+      pushState(this._path.replace('/', ''))
     })
   }
 }

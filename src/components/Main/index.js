@@ -1,16 +1,17 @@
 import Component from '../../models/component';
-import { $curentPath } from '../Router/';
+import RouterService from '../Router/router.service';
 import Routes from '../Router/routes'
 
 export default class Main extends Component {
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT), $module = $curentPath) {
+
+  constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
     super(element)
-    this._$module = $module
+    this._module = null
     this._routes = Routes
   }
 
   subscribeObservable() {
-    this._$module.subscribe(path => {
+    RouterService.router.subscribe(path => {
       if (path) {
         const module = this.findModule(path)
         this.loadComponent(module.component)
@@ -18,22 +19,28 @@ export default class Main extends Component {
     })
   }
 
+  setTitle() {
+    document.title = `${process.env.DOCUMENT_TITLE} - ${this._module.options.title}`
+      || process.env.DOCUMENT_TITLE
+  }
+
   findModule(path) {
     const regEx = new RegExp(`${path}`, 'i')
-    const module = this._routes.find(route => {
+    this._module = this._routes.find(route => {
       const match = route.path.match(regEx)
       if (Array.isArray(match)) {
         return true
       }
     })
-    if (module) {
-      return module
+    if (this._module) {
+      return this._module
     }
     return null
   }
 
   async loadComponent(component) {
     try {
+      this.setTitle()
       this._element.innerHTML = 'Carregando...'
       const fn = await import(`./../../pages/${component}/`)
       this.cleanTemplate()

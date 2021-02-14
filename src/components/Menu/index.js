@@ -2,7 +2,7 @@ import template from './template.html'
 import './styles'
 import Component from '../../models/component'
 import so from '../../js/so'
-import { $curentPath } from '../Router/'
+import RouterService from '../Router/router.service'
 
 export default class Menu extends Component {
 
@@ -31,7 +31,7 @@ export default class Menu extends Component {
   }
 
   addEventLitenerMenu() {
-    $curentPath.subscribe(path => {
+    RouterService.router.subscribe(path => {
       if (path !== '/') {
         const item = this._element.querySelector(`[href*="/${path}"]`)
         if (item) {
