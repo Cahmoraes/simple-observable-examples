@@ -14,18 +14,19 @@ export default class Main extends Component {
     RouterService.router.subscribe(path => {
       if (path) {
         const module = this.findModule(path)
-        this.loadComponent(module.component)
+        this.loadModule(module)
       }
     })
   }
 
   setTitle() {
-    document.title = `${process.env.DOCUMENT_TITLE} - ${this._module.options.title}`
+    document.title = `${process.env.DOCUMENT_TITLE} - ${this._module?.options.title}`
       || process.env.DOCUMENT_TITLE
   }
 
   findModule(path) {
-    const regEx = new RegExp(`${path}`, 'i')
+    const tmp_path = path === '/' ? path : `/${path}`
+    const regEx = new RegExp(`${tmp_path}$`, 'i')
     this._module = this._routes.find(route => {
       const match = route.path.match(regEx)
       if (Array.isArray(match)) {
@@ -38,11 +39,13 @@ export default class Main extends Component {
     return null
   }
 
-  async loadComponent(component) {
+  async loadModule(module) {
     try {
+      const { component = 'notfound' } = module || 'notfound'
       this.setTitle()
       this._element.innerHTML = 'Carregando...'
       const fn = await import(`./../../pages/${component}/`)
+      console.log(fn)
       this.cleanTemplate()
       new fn.default(this._element).init()
     } catch (error) {

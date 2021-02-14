@@ -20,7 +20,7 @@ export default class RouterService {
   }
 
   static navigate(path) {
-    pushState(path)
+    pushState(path.replace('/', ''))
     this.setRoute(path)
   }
 

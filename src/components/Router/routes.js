@@ -28,5 +28,9 @@ export default [
     options: {
       title: 'Computed Observable'
     }
+  },
+  {
+    path: '**',
+    component: 'NotFound'
   }
 ]

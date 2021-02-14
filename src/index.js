@@ -4,11 +4,17 @@ import Menu from './components/Menu'
 import Main from './components/Main'
 import Router from './components/Router'
 
+new Menu().init()
+const main = new Main().init()
 
-const router = new Router().init()
-new Menu(document.getElementById('menu')).init()
-const main = new Main(document.getElementById(process.env.ROOT_ELEMENT)).init()
-
-router.route.subscribe(path => {
-  main.loadComponent(main.findModule(path).component)
-})
+new Router()
+  .init()
+  .route
+  .subscribe(path => {
+    const module = main.findModule(path)
+    if (module) {
+      main.loadModule(module)
+    } else {
+      console.log('Módulo não encontrado')
+    }
+  })

@@ -1,12 +1,12 @@
+import so from '../../js/so'
 import template from './template.html'
 import './styles'
 import Component from '../../models/component'
-import so from '../../js/so'
 import RouterService from '../Router/router.service'
 
 export default class Menu extends Component {
 
-  constructor(element) {
+  constructor(element = document.getElementById('menu')) {
     super(element)
     this._config = { title: 'Menu' }
     this.$_activeItem = so.observable()
@@ -18,7 +18,7 @@ export default class Menu extends Component {
     this._element.insertAdjacentHTML('beforeend', template(this._config))
   }
 
-  subscribe() {
+  subscribeObservable() {
     this.$_activeItem.subscribe(activeItem => {
       if (!activeItem) return
       this._menuItems.forEach(item => item.classList.remove(this._activeClass))
@@ -47,7 +47,7 @@ export default class Menu extends Component {
     this.render()
     this.getElements()
     this.addEventLitenerMenu()
-    this.subscribe()
+    this.subscribeObservable()
     return this
   }
 }

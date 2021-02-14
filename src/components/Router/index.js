@@ -1,6 +1,5 @@
 import so from '../../js/so'
 import getEnvironment from '../../js/utils/getEnvironment';
-import pushState from '../../js/utils/pushState';
 import RouterService from './router.service'
 
 export default class Router {
@@ -11,8 +10,7 @@ export default class Router {
 
   addEventListener() {
     window.addEventListener('popstate', () => {
-      console.log(this._currentRoute(), this.getWindowRoute().replace('/', ''))
-      if (this._currentRoute() !== this.getWindowRoute()) {
+      if (this._currentRoute() !== this.getWindowRoute().replace('/', '')) {
         this.setRoute(this.getWindowRoute())
       }
     })
@@ -47,14 +45,13 @@ export default class Router {
   }
 
   verifyLocastorage() {
-    const key = '@SOExamplesPath'
+    const key = process.env.STORAGED_PATH
     const storagedPath = localStorage.getItem(key);
     if (storagedPath) {
       localStorage.removeItem(key);
-      const path = storagedPath.split('/')[1] || '/'
-      const totalPath = `${getEnvironment()}/${path}`
-      pushState(totalPath.replace('/', ''))
-      this.setRoute(totalPath)
+      const tmp_path = storagedPath.split('/')[1] || '/'
+      const path = `${getEnvironment()}/${tmp_path}`
+      this.navigate(path)
     }
   }
 
