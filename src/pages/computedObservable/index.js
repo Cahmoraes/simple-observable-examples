@@ -29,7 +29,7 @@ export default class computedObservable {
     this._computedValue = document.getElementById('computed-value')
   }
 
-  subscribe() {
+  subscribeObservable() {
     this._$computed.subscribe(value => this._computedValue.textContent = value)
   }
 
@@ -52,7 +52,7 @@ export default class computedObservable {
   init() {
     this.render()
     this.getElements()
-    this.subscribe()
+    this.subscribeObservable()
     this.addEventListenerInputs()
     return this
   }
