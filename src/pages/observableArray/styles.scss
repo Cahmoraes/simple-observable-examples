@@ -1,19 +1,10 @@
-#observbaleArray {
-  #btn-cadastrar {
-    width: 100%;
-    text-align: center;
-    padding: 5px;
-    background: #913BF3;
-    border: 1px solid #913BF3;
-    border-radius: 3px;
-    color: #FFF;
-    font-weight: bold;
-    transition: background .3s ease-out;
-    text-transform: uppercase;
-  }
-  
+#observbaleArray {  
   #btn-cadastrar:hover {
     background: #7f25e6;
+  }
+
+  #arraylength {
+    margin-top: 1rem;
   }
   
   [data-remove] {

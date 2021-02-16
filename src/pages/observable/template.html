@@ -14,10 +14,35 @@
             param: String, Number, Object, null, Function.<br>
             Valor inicial do observable.
           </p>
+          <h3>Métodos</h3>
+          <p>
+            prevValue() => retorna o valor anterior observable. <br>
+            getInitialValue() => retorna o valor inicial do observable.
+          </p>
+
+          <div class="code">
+            const $observable = so.observable(1)<br>
+            $observable(3) <br>
+            $observable(5) <br>
+            console.log($observable.prevValue()) // 3
+            console.log($observable.getInitialValue()) // 1
+          </div>
         </div>
       </section>
-      <section class="row">
-        <button id="${this.button_1}"></button>
+      <section class="row examples">
+        <div class="grid-12">
+          <button id="${this.button_1}"></button>
+        </div>
+        <div class="grid-12 MT10">
+          <div class="row">
+            <div class="grid-6">
+              <p id="inicialValue"></p>
+            </div>
+            <div class="grid-6">
+              <p id="prevValue"></p>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   </div>

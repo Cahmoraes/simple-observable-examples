@@ -28,5 +28,12 @@ export default [
     options: {
       title: 'Computed Observable'
     }
+  },
+  {
+    path: '*',
+    component: 'notfound',
+    options: {
+      title: 'Página não encontrada'
+    }
   }
 ]

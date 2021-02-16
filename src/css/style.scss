@@ -1,3 +1,4 @@
+@import './variables';
 @import './reset';
 @import './grid';
 
@@ -51,7 +52,29 @@ input[type="text"] {
     font-family: monospace;
   }
 }
+.examples {
+  button {
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    background: #913BF3;
+    border: 1px solid #913BF3;
+    border-radius: 3px;
+    color: #FFF;
+    font-weight: bold;
+    transition: background .3s ease-out;
+    text-transform: uppercase;
+  }
+}
 
 p {
   margin-bottom: 1rem;
+}
+
+.MT10 {
+  margin-top: 1rem;
+}
+
+.roxo {
+  color: $secundary;
 }

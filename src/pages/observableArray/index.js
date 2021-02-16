@@ -2,14 +2,21 @@ import so from '../../js/so'
 import './styles'
 import template from './template.html'
 
+
 export default class ObservableArray {
   constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     this._btnCadastrar = null
     this._input_1 = null
     this._input_2 = null
+    this._arraylength = null
     this._lista = null
     this._$array = so.observableArray({ nome: 'caique', idade: 22 })
+
+    this._computedLength = so.computed(() => {
+      return `Elementos: (${this._$array().length})`
+    }, [this._$array])
+
     this._config = {
       title: 'Observable Array',
       label_1: 'Nome',
@@ -22,6 +29,7 @@ export default class ObservableArray {
     this._input_1 = document.getElementById('input_1')
     this._input_2 = document.getElementById('input_2')
     this._listaPessoas = document.getElementById('lista')
+    this._arraylength = document.getElementById('arraylength')
   }
 
   render() {
@@ -41,6 +49,10 @@ export default class ObservableArray {
           ${this.createRemovePessoaBtn(index)}</li>`
       )).join('')
     })
+
+    this._computedLength.subscribe(computedValue => {
+      this._arraylength.textContent = computedValue
+    })
   }
 
   createRemovePessoaBtn(index) {
@@ -59,9 +71,13 @@ export default class ObservableArray {
   }
 
   addEventListenerCadastrar() {
-    this._btnCadastrar.addEventListener('click', (event) => {
+    this._root.querySelector('form').addEventListener('submit', event => {
+      event.preventDefault()
+    })
+
+    this._btnCadastrar.addEventListener('click', _ => {
       if (!this._input_1.value || !this._input_2.value) {
-        alert('preencha um valor')
+        this._$array.add({ nome: Date.now(), idade: Math.floor(Math.random() * 50 + 1) })
         return
       }
       this._$array.add({ nome: this._input_1.value, idade: this._input_2.value })

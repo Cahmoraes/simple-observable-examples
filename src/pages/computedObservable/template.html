@@ -4,11 +4,17 @@
     <div class="grid-12">
       <section class="row">
         <div class="grid-12 description">
-          <strong>
+          <h3>Sintaxe</h3>
+          <div class="code">
             const $computed = so.computedObservable(function,[...obervable])
-          </strong>
-          <p>Prmite criar um observable computado.</p>
-          <p>Cada obeservable alterado no array de dependências, computa o valor do obervable computado.</p>
+          </div>
+          <p>Cria um observable que retorna um valor computado.</p>
+          <p>Cada obeservable alterado no array de dependências, atualizará o valor do obervable computado.</p>
+          <h3>Params</h3>
+          <p>
+            fuction => Função que será executada toda vez que alguma dependência atualizar.<br>
+            observable[] => Array de observables.
+          </p>
         </div>
       </section>
       <div class="form-group">

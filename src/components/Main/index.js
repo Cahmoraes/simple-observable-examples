@@ -1,50 +1,41 @@
 import Component from '../../models/component';
-import RouterService from '../Router/router.service';
 import Routes from '../Router/routes'
+import Spinner from '../Spinner/template.html'
 
 export default class Main extends Component {
 
   constructor(router, element = document.getElementById(process.env.ROOT_ELEMENT)) {
     super(element)
-    this._module = null
+    this._currentModule = null
     this._routes = Routes
     this._router = router
   }
 
   subscribeObservable() {
     this._router.route.subscribe(path => {
-      if (path) {
-        const module = this.findModule(path)
-        this.loadModule(module)
-      }
+      this.loadModule(this.findModule(path))
     })
   }
 
   setTitle() {
-    document.title = `${process.env.DOCUMENT_TITLE} - ${this._module?.options.title}`
+    document.title = `${process.env.DOCUMENT_TITLE} - ${this._currentModule?.options.title}`
       || process.env.DOCUMENT_TITLE
   }
 
   findModule(path) {
-    const tmp_path = path === '/' ? path : `/${path}`
-    const regEx = new RegExp(`${tmp_path}$`, 'i')
-    this._module = this._routes.find(route => {
-      const match = route.path.match(regEx)
-      if (Array.isArray(match)) {
-        return true
-      }
-    })
-    if (this._module) {
-      return this._module
-    }
-    return null
+    const regExp = new RegExp(`${path}$`, 'i')
+    this._currentModule = this._routes
+      .find(({ path }) => {
+        if (path.match(regExp)) return true
+      }) || this._routes.find(({ path }) => path === '*')
+    return this._currentModule
   }
 
   async loadModule(module) {
     try {
-      const { component = 'notfound' } = module || 'notfound'
+      const { component } = module
       this.setTitle()
-      this._element.innerHTML = 'Carregando...'
+      this.fallback()
       const fn = await import(process.env.MODULES_PATH + component)
       this.cleanTemplate()
       new fn.default(this._element).init()
@@ -53,8 +44,21 @@ export default class Main extends Component {
     }
   }
 
+  fallback() {
+    this._element.innerHTML = this.spinner()
+  }
+
   cleanTemplate() {
-    this._element.innerHTML = ''
+    this._element.textContent = ''
+  }
+
+  spinner() {
+    return `
+    ${Spinner({ width: 90, height: 90 })}
+      <div class="container center roxo">
+        <p>Carregando...</p>
+      </div>
+    `
   }
 
   init() {
