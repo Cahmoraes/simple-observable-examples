@@ -16,6 +16,13 @@ export default [
     }
   },
   {
+    path: `${getEnvironment()}/pipeableobservable`,
+    component: 'pipeableObservable',
+    options: {
+      title: 'Pipeable Observable'
+    }
+  },
+  {
     path: `${getEnvironment()}/observableArray`,
     component: 'observableArray',
     options: {

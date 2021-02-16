@@ -27,29 +27,31 @@ input[type="text"] {
 }
 
 .description {
-  background: #EFEFEF;
-  padding: 5px;
   margin-bottom: 25px;
   font-size: 1.4rem;
   line-height: 2.1rem;
+  border-bottom: 1px solid #98e;
+
   h3 {
-    background-color: #212121;
+    background-color: #913BF3;
     color: #fff;
     font-weight: 400;
     max-width: max-content;
     padding: 0 6px;
-    margin: 24px 0;
+    margin-bottom: 2rem;
   }
+
   .code {
-    border-left: 6px solid #00458b;
+    border-left: 0.4rem solid #bba0ff;
     line-height: 1.4;
-    margin: 0 0 24px;
+    margin-bottom: 2rem;
     max-width: 100%;
     overflow: auto;
-    padding: 24px 0 24px 1rem;
+    padding: 2.4rem 0 2.4rem 1rem;
     width: 100%;
     text-align: left;
     font-family: monospace;
+    background: #f0edff6b;
   }
 }
 .examples {
