@@ -75,6 +75,10 @@ input[type="text"] {
   }
 }
 
+footer {
+  margin-top: 2rem!important;
+}
+
 p {
   margin-bottom: 1rem;
 }
@@ -112,4 +116,17 @@ p {
   padding: 5px;
   font-size: 1.5rem;
   font-family: monospace;
+}
+
+.content {
+  animation: showContent .3s forwards;
+}
+
+@keyframes showContent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

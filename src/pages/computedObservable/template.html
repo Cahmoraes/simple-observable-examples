@@ -1,34 +1,36 @@
-<h2 class="subtitle">${this.title}</h2>
-<div id="computedObservbale">
-  <div class="container-fluid">
-    <div class="grid-12">
-      <section class="row">
-        <div class="grid-12 description">
-          <h3>Sintaxe</h3>
-          <div class="code">
-            const $computed = so.computedObservable(function,[...obervable])
+<div class="content">
+  <h2 class="subtitle">${this.title}</h2>
+  <div id="computedObservbale">
+    <div class="container-fluid">
+      <div class="grid-12">
+        <section class="row">
+          <div class="grid-12 description">
+            <h3>Sintaxe</h3>
+            <div class="code">
+              const $computed = so.computedObservable(function,[...obervable])
+            </div>
+            <p>Cria um observable que retorna um valor computado.</p>
+            <p>Cada obeservable alterado no array de dependências, atualizará o valor do obervable computado.</p>
+            <h3>Params</h3>
+            <p>
+              fuction => Função que será executada toda vez que alguma dependência atualizar.<br>
+              observable[] => Array de observables.
+            </p>
           </div>
-          <p>Cria um observable que retorna um valor computado.</p>
-          <p>Cada obeservable alterado no array de dependências, atualizará o valor do obervable computado.</p>
-          <h3>Params</h3>
-          <p>
-            fuction => Função que será executada toda vez que alguma dependência atualizar.<br>
-            observable[] => Array de observables.
-          </p>
+        </section>
+        <div class="form-group">
+          <label for="input_1">${this.label_1}:</label>
+          <input type="text" id="input_1" name="input_1">
         </div>
-      </section>
-      <div class="form-group">
-        <label for="input_1">${this.label_1}:</label>
-        <input type="text" id="input_1" name="input_1">
+        <div class="form-group">
+          <label for="input_2">${this.label_2}:</label>
+          <input type="text" id="input_2" name="input_2">
+        </div>
       </div>
-      <div class="form-group">
-        <label for="input_2">${this.label_2}:</label>
-        <input type="text" id="input_2" name="input_2">
+      <div class="grid-12">
+        <span>${this.label_3}:</span>
+        <p id="computed-value"></p>
       </div>
-    </div>
-    <div class="grid-12">
-      <span>${this.label_3}:</span>
-      <p id="computed-value"></p>
     </div>
   </div>
 </div>
