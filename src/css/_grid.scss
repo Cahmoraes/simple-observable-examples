@@ -33,7 +33,7 @@ $cols: 12;
   }
 }
 
-[class^="grid-"] {
+@mixin grid-structure {
   min-height: 1px;
   margin-left: $gutter / 2;
   margin-right: $gutter / 2;
@@ -43,6 +43,10 @@ $cols: 12;
     flex: 0 1 100%;
     max-width: 100%;
   }
+}
+
+[class^="grid-"] {
+  @include grid-structure;
 }
 
 @mixin container {
@@ -73,6 +77,22 @@ $cols: 12;
 
 .container {
   @include container;
+}
+
+.container-fluid {
+  @include container;
+  max-width: 100%;
+  width: 100%;
+  @include d(m) {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+.grid-fluid {
+  @include grid-structure;
+  max-width: 100%;
+  flex: 1;
 }
 
 .center {

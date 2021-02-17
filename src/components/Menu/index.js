@@ -8,7 +8,7 @@ export default class Menu extends Component {
   constructor(router, element = document.getElementById('menu')) {
     super(element)
     this._router = router
-    this._config = { title: 'Menu' }
+    this._config = { title: 'Simple Observable' }
     this.$_activeItem = so.observable()
     this._menuItems = []
     this._activeClass = 'active'
@@ -27,7 +27,7 @@ export default class Menu extends Component {
   }
 
   getElements() {
-    this._menuItems = [...this._element.querySelectorAll('a')]
+    this._menuItems = [...this._element.querySelectorAll('li')]
   }
 
   addEventLitenerMenu() {
@@ -35,7 +35,7 @@ export default class Menu extends Component {
       if (path !== '/') {
         const item = this._element.querySelector(`[href*="/${path}"]`)
         if (item) {
-          this.$_activeItem(item)
+          this.$_activeItem(item.parentElement)
         }
       } else {
         this.$_activeItem(this._element.querySelector(`[href]`))
