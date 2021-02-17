@@ -2,6 +2,12 @@
 @import './reset';
 @import './grid';
 
+html {
+  @include d(s) {
+    font-size: 58%;
+  }
+}
+
 .subtitle {
   margin-bottom: 3rem;
   &::after {
@@ -75,6 +81,21 @@ p {
 
 .MT10 {
   margin-top: 1rem;
+}
+
+.MAXW250PERC {
+  @include d(l) {
+    max-width: 25rem!important;
+  }
+  @include d(m) {
+    max-width: 25rem!important;
+  }
+}
+
+.MOBILE100PERC {
+  @include d(s) {
+    max-width: 100%;
+  }
 }
 
 .roxo {
