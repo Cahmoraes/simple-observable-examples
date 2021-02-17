@@ -1,7 +1,7 @@
 @import '../../css/grid';
 
 #main-menu {
-  height: 100vh;
+  height: calc(100vh - 24px);
   padding: 10px;
   overflow-y: auto;
 
