@@ -75,6 +75,16 @@ module.exports = {
       {
         test: /\.html$/i,
         loader: 'html-es6-template-loader'
+      },
+      {
+        test: /\.(jpe?g|png|gif)$/i,
+        use: {
+          loader: 'file-loader',
+          options: {
+            filename: '[name].[ext]',
+            outputPath: './assets/img'
+          }
+        }
       }
     ]
   }
