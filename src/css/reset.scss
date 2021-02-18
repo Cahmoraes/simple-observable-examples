@@ -30,4 +30,10 @@ ul {
 
 a {
   text-decoration: none;
+  &:active {
+    color: #a252fd; 
+  }
+  &:visited {
+    color: #913BF3;
+  }
 }

@@ -33,6 +33,15 @@
               console.log($observable.prevValue()) // 3 <br>
               console.log($observable.getInitialValue()) // 1 <br>
             </div>
+            <h4>pipe(...fn)</h4>
+            <p>Retorna um Pipeable Obseravable. Recebe uma ou mais funções que vão transformar o valor do observable sempre que ele for exibido.</p>
+            <div class="code">
+              const $pipeable = $observable.pipe(fn1, fn2, fn3)
+            </div>
+            <p>
+              Clique aqui para mais informações sobre
+              <a is="app-link" href="/pipeableobservable">Pipeable Observable</a>.
+            </p>
           </div>
         </section>
         <section class="row examples">
