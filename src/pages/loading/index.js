@@ -6,12 +6,11 @@ export default class Loading {
     this._root = element
     this._config = {
       title: 'Loading',
-      loading: null
+      loading: this.spinner()
     }
   }
 
   render() {
-    this._config.loading = this.spinner()
     this._root.insertAdjacentHTML('beforeend', template(this._config))
   }
 

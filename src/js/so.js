@@ -194,8 +194,11 @@ const so = {
           */
           return function subscribe(observer) {
             if (typeof observer !== 'function') throw new Error('Callback is not defined')
-            _subscribers.push(observer)
-            notifyAll()
+            const repeatedFunction = _subscribers.find(sub => sub === observer)
+            if (!repeatedFunction) {
+              _subscribers.push(observer)
+              notifyAll()
+            }
             return {
               dispose() {
                 unregister(observer)
@@ -263,7 +266,11 @@ const so = {
     // Inicializa as variáveis
     const _subscribers = []
     let _computedValue = computedFn()
-    const _dependencesSubscriptions = dependencies.map(dep => dep.subscribe(setComputedValue))
+    const _dependencesSubscriptions = dependencies.map(dep => {
+      dep.hasOwnProperty('subscribe')
+        && typeof dep.subscribe === 'function'
+        && dep.subscribe(setComputedValue)
+    })
     // Atualiza valor computado
     function setComputedValue() {
       _computedValue = computedFn()

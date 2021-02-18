@@ -16,17 +16,22 @@
               Valor inicial do observable.
             </p>
             <h3>Métodos</h3>
-            <p>
-              prevValue() => retorna o valor anterior observable. <br>
-              getInitialValue() => retorna o valor inicial do observable.
-            </p>
-
+            <h4>subscribe(fn)</h4>
+            <p>Inscreve no Observable, recebe uma função de callback e retorna uma inscrição.</p>
+            <div class="code">
+              const subscription = $observable.subscribe(value => value.toUpperCase())<br>
+              subscription.dispose() // cancela a inscrição.
+            </div>
+            <h4>prevValue</h4>
+            <p>Retorna o valor anterior observable.</p>
+            <h4>getInitialValue</h4>
+            <p>retorna o valor inicial do observable.</p>
             <div class="code">
               const $observable = so.observable(1)<br>
               $observable(3) <br>
               $observable(5) <br>
-              console.log($observable.prevValue()) // 3
-              console.log($observable.getInitialValue()) // 1
+              console.log($observable.prevValue()) // 3 <br>
+              console.log($observable.getInitialValue()) // 1 <br>
             </div>
           </div>
         </section>

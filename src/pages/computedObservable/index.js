@@ -13,7 +13,7 @@ export default class computedObservable {
     this._$obs_2 = so.observable('')
     this._$computed = so.computed(() => {
       return `${this._$obs_1()} ${this._$obs_2()}`
-    }, [this._$obs_1, this._$obs_2])
+    }, [this._$obs_1, this._$obs_2, {}])
 
     this._config = {
       title: 'Computed Observable',

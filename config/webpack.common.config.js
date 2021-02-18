@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const Dotenv = require('dotenv-webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { ProvidePlugin } = require('webpack')
 
 module.exports = {
   entry: {
@@ -21,6 +22,9 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new Dotenv(),
+    new ProvidePlugin({
+      so: ['../src/js/so.js', 'default']
+    }),
     new MiniCssExtractPlugin({
       filename: './css/style.[chunkhash].css'
     }),
@@ -49,7 +53,6 @@ module.exports = {
       template: './src/404.html',
       chunks: ['main', 'shared'],
       inject: true,
-      storageKey: process.env.STORAGED_PATH,
       minify: {
         removeComments: true,
         collapseWhitespace: true
