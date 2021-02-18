@@ -37,7 +37,15 @@ export default [
     }
   },
   {
+    path: `${getEnvironment()}/loading`,
+    component: 'loading',
+    options: {
+      title: 'Carregando'
+    }
+  },
+  {
     path: '*',
+    component: `${getEnvironment()}/notfound`,
     component: 'notfound',
     options: {
       title: 'Página não encontrada'

@@ -54,7 +54,14 @@ export default class Main extends Component {
 
   spinner() {
     return `
-    ${Spinner({ width: 90, height: 90 })}
+    ${Spinner({
+      width: 90,
+      height: 90,
+      color_1: '#913BF3',
+      color_2: '#84e',
+      color_3: '#9B30F9',
+      background: '#f1f2f3'
+    })}
       <div class="container center roxo">
         <p>Carregando...</p>
       </div>
