@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const Dotenv = require('dotenv-webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { ProvidePlugin } = require('webpack')
+const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -57,6 +58,9 @@ module.exports = {
         removeComments: true,
         collapseWhitespace: true
       }
+    }),
+    new BaseHrefWebpackPlugin({
+      baseHref: process.env.NODE_ENV === 'development' ? '/' : '/simple-observable-examples/'
     })
   ],
   module: {
