@@ -23,6 +23,13 @@ export default [
     }
   },
   {
+    path: `${getEnvironment()}/middleware`,
+    component: 'middleware',
+    options: {
+      title: 'Middleware'
+    }
+  },
+  {
     path: `${getEnvironment()}/observableArray`,
     component: 'observableArray',
     options: {

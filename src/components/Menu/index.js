@@ -13,6 +13,9 @@ export default class Menu extends Component {
     this.$_activeItem = so.observable()
     this._menuItems = []
     this._activeClass = 'active'
+    this._menuHamburguer = null
+    this._navMenu = null
+    this._menuContainer = null
   }
 
   render() {
@@ -29,6 +32,18 @@ export default class Menu extends Component {
 
   getElements() {
     this._menuItems = [...this._element.querySelectorAll('li')]
+    this._menuHamburguer = this._element.querySelector('[data-menu="hamburguer"]')
+    this._navMenu = this._element.querySelector('[data-menu="nav"]')
+    this._menuContainer = this._element.querySelector('[data-menu="container"]')
+  }
+
+  handleOutsideClick(event) {
+    const clickedElement = event.target
+    if (!this._menuContainer.contains(clickedElement)) {
+      this._navMenu.classList.remove(this._activeClass)
+      this._menuHamburguer.classList.remove(this._activeClass)
+      document.body.removeEventListener('click', this.handleOutsideClick)
+    }
   }
 
   addEventLitenerMenu() {
@@ -41,6 +56,12 @@ export default class Menu extends Component {
       } else {
         this.$_activeItem(this._element.querySelector(`[href]`))
       }
+    })
+
+    this._menuHamburguer.addEventListener('click', () => {
+      this._navMenu.classList.add(this._activeClass)
+      this._menuHamburguer.classList.add(this._activeClass)
+      document.body.addEventListener('click', this.handleOutsideClick)
     })
   }
 
@@ -57,7 +78,12 @@ export default class Menu extends Component {
     `
   }
 
+  bindMethods() {
+    this.handleOutsideClick = this.handleOutsideClick.bind(this)
+  }
+
   init() {
+    this.bindMethods()
     this.render()
     this.getElements()
     this.addEventLitenerMenu()

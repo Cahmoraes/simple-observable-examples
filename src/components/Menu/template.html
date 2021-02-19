@@ -1,28 +1,41 @@
 <div id="main-menu">
-  <h1 class="logo">
-    ${this.title}
-  </h1>
-  <ul>
-    <li>
-      <a is="app-link" href="/observable">Observable</a>
-    </li>
-    <li>
-      <a is="app-link" href="/pipeableobservable">Pipeable Observable</a>
-    </li>
-    <li>
-      <a is="app-link" href="/observableArray">Observable Array</a>
-    </li>
-    <li>
-      <a is="app-link" href="/computedObservable">Computed Observable</a>
-    </li>
-    <li>
-      <a is="app-link" href="/loading">Loading (example)</a>
-    </li>
-    <li>
-      <a is="app-link" href="/notfound">Not found (example)</a>
-    </li>
-    <li>
-      <a target="_blank" href="https://raw.githubusercontent.com/Cahmoraes/simple-observable-examples/main/src/js/so.js">Download Dev Version ➤</a>
-    </li>
-  </ul>
+
+  <div data-menu="container">
+    <h1 class="logo">
+      <div class="hamburguer" data-menu="hamburguer">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      ${this.title}
+    </h1>
+    <nav id="nav-bar" data-menu="nav">
+      <ul>
+        <li>
+          <a is="app-link" href="/observable">Observable</a>
+        </li>
+        <li>
+          <a is="app-link" href="/pipeableobservable">Pipeable Observable</a>
+        </li>
+        <li>
+          <a is="app-link" href="/middleware">Middleware</a>
+        </li>
+        <li>
+          <a is="app-link" href="/observableArray">Observable Array</a>
+        </li>
+        <li>
+          <a is="app-link" href="/computedObservable">Computed Observable</a>
+        </li>
+        <li>
+          <a is="app-link" href="/loading">Loading (example)</a>
+        </li>
+        <li>
+          <a is="app-link" href="/notfound">Not found (example)</a>
+        </li>
+        <li>
+          <a target="_blank" href="https://raw.githubusercontent.com/Cahmoraes/simple-observable-examples/main/src/js/so.js">Download Dev Version ➤</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>

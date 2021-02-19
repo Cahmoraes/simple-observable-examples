@@ -49,15 +49,13 @@ input[type="text"] {
 
   .code {
     border-left: 0.4rem solid #bba0ff;
-    line-height: 1.6rem;
     margin-bottom: 2rem;
     max-width: 100%;
     overflow: auto;
     padding: 2.4rem 0 2.4rem 1rem;
     width: 100%;
-    text-align: left;
-    font-family: monospace;
     background: #f0edff6b;
+    white-space: normal;
   }
 }
 .examples {
