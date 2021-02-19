@@ -11,10 +11,10 @@ html {
 .subtitle {
   margin-bottom: 2rem;
   &::before {
-    content: '⮞';
+    content: '🢒';
     display: inline-block;
     margin-right: 0.6rem;
-    font-size: 2.2rem;
+    font-size: 3rem;
   }
   &::after {
     content: '';
@@ -87,8 +87,8 @@ p {
   margin-top: 1rem;
 }
 
-.PT10 {
-  padding-top: 10px;
+.PT02 {
+  padding-top: 2px;
 }
 
 .MAXW250PERC {
