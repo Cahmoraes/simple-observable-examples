@@ -63,15 +63,16 @@
     margin-right: 1rem;
     cursor: pointer;
     position: relative;
+    will-change: auto;
 
     @include d(s) {
       display: block;
     }
 
-
     &.active {
       transform: rotate(45deg);
       transition: .3s ease-in-out;
+      will-change: auto;
       & > div:first-child {
         transform: rotate(90deg);
         top: 7px;
@@ -94,6 +95,7 @@
   
   #nav-bar {
     @include d(s) {
+        will-change: auto;
         position: fixed;
         background: #a252fd;
         z-index: 999;

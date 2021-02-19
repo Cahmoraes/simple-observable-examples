@@ -73,10 +73,6 @@ input[type="text"] {
   }
 }
 
-footer {
-  margin-top: 2rem!important;
-}
-
 p {
   margin-bottom: 1rem;
 }
@@ -118,6 +114,8 @@ p {
 
 .content {
   animation: showContent .3s forwards;
+  will-change: auto;
+  margin-bottom: 2rem!important;
 }
 
 @keyframes showContent {
