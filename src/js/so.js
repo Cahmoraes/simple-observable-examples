@@ -488,6 +488,7 @@ const so = {
       },
       'get': {
         get() {
+          // Obtém elemento do índice fornecido (retorna o observable)
           return function get(index) {
             if (typeof index !== 'number') throw new Error('index must be a number')
             if (index >= 0 && index < getObsevableArray().length) return getObsevableArray()[index]
@@ -495,6 +496,7 @@ const so = {
           }
         }
       },
+      // Obtém elemento do índice fornecido (retorna o valor do observable)
       'getValue': {
         get() {
           return function getValue(index) {
