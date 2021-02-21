@@ -341,20 +341,20 @@ const so = {
     return computed
   },
   // Observable Array
-  observableArray: function ObservableArray(paramData) {
+  observableArray: function ObservableArray(...paramData) {
     // Inicializa o array de observables
     let _observableArray = []
     // Inicia o array dos inscritos
     const _subscribers = []
     // Verifica se data é um array
-    if (Array.isArray(paramData)) {
+    if (Array.isArray(paramData[0])) {
       // Para cada elemento de data,
       // crie um observable customizado e adicione no array
-      paramData.forEach(function (d) {
+      paramData[0].forEach(function (d) {
         _observableArray.push(createElementArray(d))
       })
     } else {
-      _observableArray.push(createElementArray(paramData))
+      _observableArray.push(...paramData.map(param => createElementArray(param)))
     }
     // Altera o valor do ObservableArray criado
     function createObservableArray(newParamData) {
@@ -483,6 +483,24 @@ const so = {
             }
             // Notifica todos os ouvintes sobre a mudança no array
             notifyAll()
+          }
+        }
+      },
+      'get': {
+        get() {
+          return function get(index) {
+            if (typeof index !== 'number') throw new Error('index must be a number')
+            if (index >= 0 && index < getObsevableArray().length) return getObsevableArray()[index]
+            return null
+          }
+        }
+      },
+      'getValue': {
+        get() {
+          return function getValue(index) {
+            if (typeof index !== 'number') throw new Error('index must be a number')
+            if (index >= 0 && index < getObsevableArray().length) return getObsevableArray()[index]()
+            return null
           }
         }
       },
