@@ -346,14 +346,17 @@ const so = {
     let _observableArray = []
     // Inicia o array dos inscritos
     const _subscribers = []
-    // Verifica se data é um array
+    // Verifica se a primeira posição de paramData é um array
     if (Array.isArray(paramData[0])) {
-      // Para cada elemento de data,
+      // Para cada elemento de paramData,
       // crie um observable customizado e adicione no array
       paramData[0].forEach(function (d) {
         _observableArray.push(createElementArray(d))
       })
     } else {
+      /* 
+      Pegue todos os parâmetros que foram recebidos como array, crie um Observable Customizado e adicione no observable Array
+      */
       _observableArray.push(...paramData.map(param => createElementArray(param)))
     }
     // Altera o valor do ObservableArray criado

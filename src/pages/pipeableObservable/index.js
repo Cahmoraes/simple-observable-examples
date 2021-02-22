@@ -30,7 +30,7 @@ export default class PipeableObservable {
   }
 
   addEventListener() {
-    this._input_1.addEventListener('keyup', ({ target }) => {
+    this._input_1.addEventListener('input', ({ target }) => {
       this._$obs_1(target.value)
     })
   }

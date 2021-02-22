@@ -34,12 +34,12 @@ export default class computedObservable {
   }
 
   addEventListenerInputs() {
-    this._input_1.addEventListener('keyup', (event) => {
+    this._input_1.addEventListener('input', (event) => {
       const value = event.target.value
       this._$obs_1(value)
     })
 
-    this._input_2.addEventListener('keyup', (event) => {
+    this._input_2.addEventListener('input', (event) => {
       const value = event.target.value
       this._$obs_2(value)
     })
