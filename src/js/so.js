@@ -205,7 +205,7 @@ const so = {
               }
             }
           }
-        }
+        },
       },
       // Adiciona o método pipe que recebe como parâmetro 1 ou mais callbacks
       // Retorna um PipeableObserver sem alterar o Observer original
