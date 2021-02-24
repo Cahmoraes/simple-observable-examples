@@ -16,6 +16,11 @@ export default (function () {
           prevValue: null,
           initialValue: parameterValue
         }
+
+        function managerState(newState = null) {
+          return { ...Object.assign(state, { ...newState }) }
+        }
+
         return {
           // Obtém o valor inicial do Observable
           getInitialObservableValue: function getInitialObservableValue() {
@@ -27,7 +32,8 @@ export default (function () {
           },
           // Atualiza o valor anterior do Observable
           setPrevObservableValue: function setPrevObservableValue(prevValue) {
-            state.prevValue = prevValue
+            managerState({ prevValue: prevValue })
+            // state.prevValue = prevValue
           },
           // Obtém o valor atual do Observable
           getObservableValue: function getObservableValue() {
@@ -35,7 +41,8 @@ export default (function () {
           },
           // Atualiza o valor atual do Obervable
           setObservableValue: function setObservableValue(newParameterObservableValue) {
-            state.observableValue = newParameterObservableValue
+            // state.observableValue = newParameterObservableValue
+            managerState({ observableValue: newParameterObservableValue })
           },
           // Atualiza o valor atual e anterior do Observable
           setObservableValues: function setObservableValues(newParameterObservableValue) {
@@ -281,10 +288,15 @@ export default (function () {
         const state = {
           computedValue: computedFn()
         }
+
+        function managerState(newState = null) {
+          return { ...Object.assign(state, { ...newState }) }
+        }
+
         return {
           // Atualiza valor computado
           setComputedValue: function setComputedValue() {
-            state.computedValue = computedFn()
+            managerState({ computedValue: computedFn() })
             notifyAll()
           },
           // Retorna valor computado
