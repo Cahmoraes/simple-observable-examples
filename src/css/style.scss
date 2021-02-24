@@ -55,8 +55,25 @@ input[type="text"] {
     overflow: auto;
     padding: 2.4rem 0 2.4rem 1rem;
     width: 100%;
-    background: #f0edff6b;
+    background: #FAFAFA;
     white-space: normal;
+
+    & > * {
+      display: block;
+    }
+
+    .tab_1 {
+      margin-left: 1rem;
+    }
+    .tab_2 {
+      margin-left: 2rem;
+    }
+    .tab_3 {
+      margin-left: 3rem;
+    }
+    .tab_4 {
+      margin-left: 4rem;
+    }
   }
 }
 .examples {

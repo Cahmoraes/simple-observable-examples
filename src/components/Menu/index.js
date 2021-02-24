@@ -24,7 +24,6 @@ export default class Menu extends Component {
 
   subscribeObservable() {
     this.$_activeItem.subscribe(activeItem => {
-      console.log('menu')
       if (!activeItem) return
       this._menuItems.forEach(item => item.classList.remove(this._activeClass))
       activeItem.classList.add(this._activeClass)
@@ -50,9 +49,7 @@ export default class Menu extends Component {
   addEventLitenerMenu() {
     this._router.route.subscribe(path => {
       if (path !== '/') {
-        console.log(path)
         const item = this._element.querySelector(`[href*="/${path}"]`)
-        console.log({ item })
         if (item) {
           this.$_activeItem(item.parentElement)
         }
