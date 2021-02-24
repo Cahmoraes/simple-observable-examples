@@ -33,7 +33,6 @@ export default (function () {
           // Atualiza o valor anterior do Observable
           setPrevObservableValue: function setPrevObservableValue(prevValue) {
             managerState({ prevValue: prevValue })
-            // state.prevValue = prevValue
           },
           // Obtém o valor atual do Observable
           getObservableValue: function getObservableValue() {
@@ -41,7 +40,6 @@ export default (function () {
           },
           // Atualiza o valor atual do Obervable
           setObservableValue: function setObservableValue(newParameterObservableValue) {
-            // state.observableValue = newParameterObservableValue
             managerState({ observableValue: newParameterObservableValue })
           },
           // Atualiza o valor atual e anterior do Observable
