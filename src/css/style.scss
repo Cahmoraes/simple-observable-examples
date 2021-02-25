@@ -134,6 +134,10 @@ p {
   font-family: monospace;
 }
 
+.word-break {
+  word-break: break-all;
+}
+
 .content {
   animation: showContent .3s forwards;
   will-change: auto;
@@ -147,4 +151,9 @@ p {
   to {
     opacity: 1;
   }
+}
+
+label {
+  display: block;
+  margin-bottom: 1rem;
 }

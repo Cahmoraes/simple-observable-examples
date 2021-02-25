@@ -7,8 +7,8 @@
           <div class="grid-12 description">
             <h3>Sintaxe</h3>
             <pre class="code">
-              const $pipeable = so.observable(param [,function]).pipe([...function])<br>
-            </pre>
+                const $pipeable = so.observable(param [,function]).pipe([...function])<br>
+              </pre>
             <p>Cria um Pipeable observable.</p>
             <p>Pipeable Observable, é um observable que lembra das funções que transformarão seu valor. Toda vez que seu valor for atualizado, as funções pipeables serão executadas sobre o novo valor.</p>
             <h3>Parâmetros</h3>
@@ -23,17 +23,18 @@
               getInitialValue() => retorna o valor inicial do observable.
             </p>
             <pre class="code">
-              const $pipe = so.observable('caique').pipe(<br>
-              (value) => value.toUpperCase()<br>
-              )<br>
-              // CAIQUE
-            </pre>
+                const $pipe = so.observable('caique').pipe(<br>
+                <span class="tab_1">(value) => value.toUpperCase()</span>
+                )<br>
+                // CAIQUE
+              </pre>
           </div>
         </section>
         <section class="row examples">
           <div class="grid-12">
-            <input type="text" id="${this.input_1}" placeholder="${this.placeholder_1}">
-            <p id="${this.value_1}"></p>
+            <label for="${this.input_1}">${this.label_1}</label>
+            <input type="text" id="${this.input_1}" name="${this.input_1}" placeholder="${this.placeholder_1}">
+            <p class="word-break" id="${this.value_1}"></p>
           </div>
         </section>
       </div>

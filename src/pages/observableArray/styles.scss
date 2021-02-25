@@ -18,6 +18,7 @@
     li {
       padding: 0.6rem;
       margin-bottom: 0.5rem;
+      word-break: break-all;
 
       &:nth-child(odd) {
         background: #bfafd052;

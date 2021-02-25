@@ -7,9 +7,10 @@
           <div class="grid-12 description">
             <h3>Sintaxe</h3>
             <pre class="code">
-              const $computed = so.computedObservable(function,[...obervable])
-            </pre>
+                const $computed = so.computedObservable(function,[...obervable])
+              </pre>
             <p>Cria um observable que retorna um valor computado.</p>
+            <p>O Computed Observable é um observable cujo valor é calculado com base nos valores de outros observables.</p>
             <p>Cada obeservable alterado no array de dependências, atualizará o valor do obervable computado.</p>
             <h3>Params</h3>
             <p>
@@ -31,7 +32,7 @@
           </div>
           <div class="grid-12">
             <span>${this.label_3}:</span>
-            <p id="computed-value"></p>
+            <p id="computed-value" class="word-break"></p>
           </div>
         </section>
       </div>

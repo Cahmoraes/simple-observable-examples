@@ -15,6 +15,7 @@ export default class PipeableObservable {
     this._config = {
       title: 'Pipeable Observable',
       input_1: 'input_1',
+      label_1: 'Dados de entrada:',
       placeholder_1: 'Digite algum texto...',
       value_1: 'value_1'
     }
@@ -37,7 +38,7 @@ export default class PipeableObservable {
 
   subscribeObservable() {
     this._$computedPipeable_1.subscribe(computedValue => {
-      this._value_1.textContent = `Pipeable Value: ${computedValue}`
+      this._value_1.innerHTML = `<label>Pipeable Value:</label> ${computedValue}`
     })
   }
 
