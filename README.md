@@ -6,7 +6,7 @@
 
 ## :rocket: Sobre
 
-<img src="https://github.com/Cahmoraes/nature/blob/main/img/example/example.gif" alt="Nature">
+<img src="https://github.com/Cahmoraes/simple-observable-examples/blob/main/src/assets/examples/example-1.gif" alt="Nature">
 
 ## Descrição
 Desenvolvimento da biblioteca Simple Observable
