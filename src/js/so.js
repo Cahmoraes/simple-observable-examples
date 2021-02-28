@@ -82,7 +82,14 @@ export default (function () {
       /******************************************************/
       /* Aqui inicia a lógica de construção do Observable */
       // Inicia o valor do Observable
-      observableState.setObservableValues(parameterValue)
+      if (typeof parameterValue === 'function') {
+        const evaluation = parameterValue()
+        if (typeof evaluation !== 'undefined') {
+          observableState.setObservableValues(evaluation)
+        }
+      } else {
+        observableState.setObservableValues(parameterValue)
+      }
       /* 
       Função que será retornada ao executar a função Observable()
       e executada toda vez que alterar um Observable 
@@ -166,7 +173,7 @@ export default (function () {
         const pipeableValue = obervable.pipeableFns.reduce(function (pipeableValue, fnPipeable) {
           return fnPipeable(pipeableValue)
         }, newParamValue)
-        observableState.setObservableValue(pipeableValue)
+        observableState.setObservableValues(pipeableValue)
         notifyAll()
         return observableState.getObservableValue()
       }

@@ -23,10 +23,19 @@
               getInitialValue() => retorna o valor inicial do observable.
             </p>
             <pre class="code">
-                const $pipe = so.observable('caique').pipe(<br>
+                const $pipeExample_1 = so.observable('caique').pipe(<br>
                 <span class="tab_1">(value) => value.toUpperCase()</span>
-                )<br>
-                // CAIQUE
+                ) 
+                cosole.log($pipeExample_1())// CAIQUE <br><br>
+                const $pipeExample_2 = so.observable(10).pipe(
+                  <span class="tab_2">(value) => Number(value), </span>
+                  <span class="tab_2">(value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) </span>
+                ) <br>
+                $pipeExample_2.subscribe(console.log) <br>
+                $pipeExample_2() // R$ 10,00 <br>
+                $pipeExample_2(250) // R$ 250,00 <br>
+                $pipeExample_2('3000') // R$ 3.000,00 <br>
+                console.log($pipeExample_2.prevValue()) // R$ 250,00
               </pre>
           </div>
         </section>

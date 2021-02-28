@@ -16,6 +16,24 @@
               Valor inicial do observable.
             </p>
             <p>
+              O observable pode ser iniciado ou atualizado com uma função que obrigatóriamente deve retornar um valor, o valor retornado será atribuído ao valor do Observable.<br>
+              Se o obervable for iniciado com uma função que não possui retorno, seu valor será a prória função.
+            </p>
+            <p>
+              Quando um Obervable for atualizado, ele pode receber uma função de callback. Esta função receberá como parâmetro o valor atual do obervable.<br>
+              Se a função de callback não tiver um retorno, o valor permanecerá com o valor atual.
+            </p>
+            <pre class="code">
+              const $obs = so.observable(() => 1) <br>
+              console.log($obs()) // 1 <br>
+              $obs((currentValue) => currentValue + 2) <br>
+              console.log($obs()) // 3 <br>
+              $obs((currentValue) => { <br>
+                <span class="tab_2">console.log(currentValue + 1) //4 </span>
+              }) <br>
+              console.log($obs()) // 3 <br>
+            </pre>
+            <p>
               function: Função Middleware. Intercepta todas as mudanças de valor no Observable.<br>
               Para saber mais sobre Middleware, acesse: <a is="app-link" href="/middleware">Middleware</a>.
             </p>
