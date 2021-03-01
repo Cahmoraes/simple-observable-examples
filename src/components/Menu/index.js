@@ -27,6 +27,7 @@ export default class Menu extends Component {
       if (!activeItem) return
       this._menuItems.forEach(item => item.classList.remove(this._activeClass))
       activeItem.classList.add(this._activeClass)
+      activeItem.parentElement.classList.add(this._activeClass)
     })
   }
 

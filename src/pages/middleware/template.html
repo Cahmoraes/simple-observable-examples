@@ -10,7 +10,7 @@
                 function middleware(prevValue, newValue, next) {
                   <span class="tab_1">console.log(prevValue) // 1</span>
                   <span class="tab_1">console.log(newValue) // 2 </span>
-                  <span class="tab_1">console.log(newValue()) // 2 </span>
+                  <span class="tab_1">console.log(next()) // 2 </span>
                 }
                 <span>const $obs = so.obervable(1, middleware)</span>
                 <span>$obs(2)</span>

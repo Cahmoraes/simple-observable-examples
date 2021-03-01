@@ -15,13 +15,13 @@ export default [
       title: 'Observable'
     }
   },
-  {
-    path: `${getEnvironment()}/pipeableobservable`,
-    component: 'pipeableObservable',
-    options: {
-      title: 'Pipeable Observable'
-    }
-  },
+  // {
+  //   path: `${getEnvironment()}/pipeableobservable`,
+  //   component: 'pipeableObservable',
+  //   options: {
+  //     title: 'Pipeable Observable'
+  //   }
+  // },
   {
     path: `${getEnvironment()}/middleware`,
     component: 'middleware',

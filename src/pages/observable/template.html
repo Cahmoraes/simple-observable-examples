@@ -44,18 +44,19 @@
                 const subscription = $observable.subscribe(value => value.toUpperCase())<br>
                 subscription.dispose() // cancela a inscrição.
               </pre>
+            <h3>Propriedades</h3>
             <h4>prevValue</h4>
             <p>Retorna o valor anterior observable.</p>
-            <h4>getInitialValue</h4>
+            <h4>initialValue</h4>
             <p>retorna o valor inicial do observable.</p>
             <pre class="code">
                 const $observable = so.observable(1)<br>
                 $observable(3) <br>
                 $observable(5) <br>
-                console.log($observable.prevValue()) // 3 <br>
-                console.log($observable.getInitialValue()) // 1 <br>
+                console.log($observable.prevValue) // 3 <br>
+                console.log($observable.initialValue) // 1 <br>
               </pre>
-            <h4>pipe(...fn)</h4>
+            <!-- <h4>pipe(...fn)</h4>
             <p>Retorna um Pipeable Obseravable. Recebe uma ou mais funções que vão transformar o valor do observable sempre que ele for exibido.</p>
             <pre class="code">
                 const $pipeable = $observable.pipe(fn1, fn2, fn3)
@@ -63,7 +64,7 @@
             <p>
               Clique aqui para mais informações sobre
               <a is="app-link" href="/pipeableobservable">Pipeable Observable</a>.
-            </p>
+            </p> -->
           </div>
         </section>
         <section class="row examples">

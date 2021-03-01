@@ -5,8 +5,8 @@ export default class Observable {
   constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     this._$obs_1 = so.observable(0)
-    this._$computedInicial = so.computed(() => this._$obs_1.getInitialValue(), [this._$obs_1])
-    this._$computedPrev = so.computed(() => this._$obs_1.prevValue(), [this._$obs_1])
+    this._$computedInicial = so.computed(() => this._$obs_1.initialValue, [this._$obs_1])
+    this._$computedPrev = so.computed(() => this._$obs_1.prevValue, [this._$obs_1])
     this._button_1 = null
     this._inicialValue = null
     this._prevValue = null
