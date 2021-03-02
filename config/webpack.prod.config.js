@@ -9,6 +9,9 @@ module.exports = merge(WebpackBaseConfig, {
     publicPath: '/simple-observable-examples/'
   },
   optimization: {
-    runtimeChunk: true
+    runtimeChunk: true,
+    splitChunks: {
+      chunk: 'all'
+    }
   }
 })

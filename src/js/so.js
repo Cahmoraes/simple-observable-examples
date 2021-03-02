@@ -319,21 +319,23 @@ const so = (function () {
     }
   }
 
-  function initializeObservable({ observableState, newParamValue, createdMiddleware }) {
-    if (typeof newParamValue === 'undefined') {
+  function initializeObservable({ observableState, newParameterValue, createdMiddleware }) {
+    if (typeof newParameterValue === 'undefined') {
       return observableState.getObservableValue()
     }
     if (typeof createdMiddleware === 'function') {
       createdMiddleware()
     }
-    if (typeof newParamValue === 'function') {
-      const callbackEvaluated = newParamValue()
-      if (typeof newParamValue !== 'undefined') {
+    if (typeof newParameterValue === 'function') {
+      const callbackEvaluated = newParameterValue(observableState.getObservableValue())
+      if (typeof callbackEvaluated === 'undefined') {
+        observableState.setObservableValues(observableState.getObservableValue())
+      } else {
         observableState.setObservableValues(callbackEvaluated)
-        return observableState.getObservableValue()
       }
+      return observableState.getObservableValue()
     }
-    observableState.setObservableValues(newParamValue)
+    observableState.setObservableValues(newParameterValue)
     return observableState.getObservableValue()
   }
 
@@ -344,13 +346,13 @@ const so = (function () {
     }
   }
 
-  function createMiddleware({ middleware, observableState, newParamValue }) {
+  function createMiddleware({ middleware, observableState, newParameterValue }) {
     if (typeof middleware !== 'function') return false
     return middleware.bind(
       this,
       observableState.getObservableValue(),
-      newParamValue,
-      createMiddlewareFnNext(observableState, newParamValue)
+      newParameterValue,
+      createMiddlewareFnNext(observableState, newParameterValue)
     )
   }
 
@@ -366,6 +368,10 @@ const so = (function () {
     // Verifica se as dependências estão vazias
     if (dependencies.length === 0) {
       throw new Error('dependencies is empty')
+    } else {
+      if (!dependencies[0].hasOwnProperty('subscribe')) {
+        throw new Error('dependencie must be a observable')
+      }
     }
   }
 
@@ -447,29 +453,29 @@ const so = (function () {
   }
 
   const so = {
-    observable(paramValue, middleware = null) {
+    observable(parameterValue, middleware = null) {
       // Inicializa o estado do Array de inscritos
       const subscribersState = createSubscribersState()
       // Estatos iniciais do Observable
-      const inicialState = {
-        initialValue: paramValue,
+      const initialState = {
+        initialValue: parameterValue,
         prevValue: null,
-        currentValue: paramValue
+        currentValue: parameterValue
       }
       // Gerencia os estados do Observable
-      const observableState = createObservableState(inicialState, subscribersState.getSubscribers)
+      const observableState = createObservableState(initialState, subscribersState.getSubscribers)
       // Gerencia a chamada do Observable
-      function observable(newParamValue) {
+      function observable(newParameterValue) {
         // Cria Middleware
         const createdMiddleware = createMiddleware({
           middleware,
           observableState,
-          newParamValue
+          newParameterValue
         })
 
         return initializeObservable({
           observableState,
-          newParamValue,
+          newParameterValue,
           createdMiddleware
         })
       }
@@ -487,13 +493,13 @@ const so = (function () {
       // Inicializa o estado do Array de inscritos
       const subscribersState = createSubscribersState()
       // Estatos iniciais do Observable
-      const inicialState = {
+      const initialState = {
         computedValue: computedFn(),
         computedFn: computedFn
       }
       // Gerencia os estados do Observable
       const computedObservableState = createObservableComputedState(
-        inicialState,
+        initialState,
         subscribersState.getSubscribers
       )
       // Inicializa a construção do Computed Observable

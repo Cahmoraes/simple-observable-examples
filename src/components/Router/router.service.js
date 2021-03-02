@@ -6,7 +6,7 @@ function routerServiceMiddleware(_, newValue, next) {
   next(path)
 }
 
-const initialPath = window.location.pathname.slice(1) || '/'
+const initialPath = (window.location.pathname.slice(1) || '').replace('/', '')
 const $router = so.observable(initialPath, routerServiceMiddleware)
 
 export class RouterService {
