@@ -29,7 +29,7 @@ const so = (function () {
     function setObservableValues(newValue) {
       setPrevObservableValue(getObservableValue())
       setObservableValue(newValue)
-      createFnNotifyAll(getSubscribers(), getObservableValue)()
+      createFnNotifyAll(getSubscribers, getObservableValue)()
     }
 
     return {
@@ -51,7 +51,7 @@ const so = (function () {
 
     function setObservableValue() {
       managerSate({ computedValue: state.computedFn() })
-      createFnNotifyAll(getSubscribers(), getObservableValue)()
+      createFnNotifyAll(getSubscribers, getObservableValue)()
     }
 
     return {
@@ -65,8 +65,12 @@ const so = (function () {
       return state = [...newState]
     }
 
+    function isDuplicate(subscriber) {
+      return state.includes(subscriber)
+    }
+
     function addSubscriber(subscriber) {
-      managerState([...state, subscriber])
+      !isDuplicate(subscriber) && managerState([...state, subscriber])
     }
 
     function getSubscribers() {
@@ -121,7 +125,7 @@ const so = (function () {
               subscribersState,
               subscriber,
               createFnNotifyAll(
-                subscribersState.getSubscribers(),
+                subscribersState.getSubscribers,
                 observableState.getObservableValue
               )
             )()
@@ -143,11 +147,31 @@ const so = (function () {
     }
   }
 
-  function createPipeableObservableProps({ subscribersState, observableState }) {
+  function combineProperties(...properties) {
+    return properties.reduce(function (combinedProperties, property) {
+      return Object.assign(combinedProperties, property)
+    }, {})
+  }
+
+  function createPipeableObservableProps({ observableState }) {
     return {
       'pipe': {
-
+        get() {
+          return function (...fns) {
+            const pipeableValue = pipe(...fns)(observableState.getObservableValue())
+            observableState.setObservableValues(pipeableValue)
+            return this
+          }
+        }
       }
+    }
+  }
+
+  function pipe(...fns) {
+    return function (value) {
+      return fns.reduce(function (pipeableValue, fn) {
+        return fn(pipeableValue)
+      }, value)
     }
   }
 
@@ -157,7 +181,7 @@ const so = (function () {
   }) {
 
     const notifyObservableArray = createFnNotifyAll(
-      subscribersState.getSubscribers(),
+      subscribersState.getSubscribers,
       observableArrayState.getElements
     )
 
@@ -239,7 +263,7 @@ const so = (function () {
               subscriber,
               subscriptionsDependencies,
               createFnNotifyAll(
-                subscribersState.getSubscribers(),
+                subscribersState.getSubscribers,
                 observableState.getObservableValue
               )
             )()
@@ -254,7 +278,7 @@ const so = (function () {
       if (typeof subscriber !== 'function') {
         throw new Error('Subscribe must receive a callback function')
       }
-      subscribersState.getSubscribers().push(subscriber)
+      subscribersState.addSubscriber(subscriber)
       notify()
       return {
         dispose: createFnDispose(subscribersState.removeSubscriber, subscriber)
@@ -272,7 +296,7 @@ const so = (function () {
       if (typeof subscriber !== 'function') {
         throw new Error('Subscribe must receive a callback function')
       }
-      subscribersState.getSubscribers().push(subscriber)
+      subscribersState.addSubscriber(subscriber)
       notify()
       return {
         dispose: createFnComputedDispose(subscribersState.removeSubscriber, subscriber, subscriptionsDependencies)
@@ -285,7 +309,7 @@ const so = (function () {
       if (typeof subscriber !== 'function') {
         throw new Error('Subscribe must receive a callback function')
       }
-      subscribersState.getSubscribers().push(subscriber)
+      subscribersState.addSubscriber(subscriber)
       notify()
       return {
         dispose: createFnDispose(subscribersState.removeSubscriber, subscriber)
@@ -304,10 +328,10 @@ const so = (function () {
     }
   }
 
-  function createFnNotifyAll(subscribers, getObservableValue) {
+  function createFnNotifyAll(getSubscribers, getObservableValue) {
     return function notifyAll() {
-      if (!subscribers.length) return null
-      subscribers.map(function (subscriber) {
+      if (!getSubscribers().length) return null
+      getSubscribers().map(function (subscriber) {
         subscriber(getObservableValue())
       })
     }
@@ -530,7 +554,7 @@ const so = (function () {
 
       function notifyObservableArray() {
         createFnNotifyAll(
-          subscribersState.getSubscribers(),
+          subscribersState.getSubscribers,
           observableArrayState.getElements
         )()
       }
