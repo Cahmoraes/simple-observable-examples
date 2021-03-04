@@ -38,12 +38,25 @@
               Para saber mais sobre Middleware, acesse: <a is="app-link" href="/middleware">Middleware</a>.
             </p>
             <h3>Métodos</h3>
-            <h4>subscribe(fn)</h4>
+            <h4>subscribe(function)</h4>
             <p>Inscreve no Observable, recebe uma função de callback e retorna uma inscrição.</p>
             <pre class="code">
                 const subscription = $observable.subscribe(value => value.toUpperCase())<br>
                 subscription.dispose() // cancela a inscrição.
-              </pre>
+            </pre>
+            <h4>pipe(...function)</h4>
+            <p>Pipe é um operador de trasformação. Recebe uma ou mais funções por parâmetros e retorna um observable.</p>
+            <p>
+              Cada função deve receber um parâmetro que será o valor do observable e retornar o valor transformado que será passado para a próxima função. Ao término, o mesmo observable será retornado, porém com seu valor transformado pelas Pipeable Functions.
+            </p>
+            <pre class="code">
+              const $obs = so.observable(3)<br>
+              $obs.pipe(
+                <span class="tab_2">(value) => value * 10,</span>
+                <span class="tab_2">(value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })</span>
+              ).subscribe(console.log)<br>
+              // R$ 30,00
+            </pre>
             <h3>Propriedades</h3>
             <h4>prevValue</h4>
             <p>Retorna o valor anterior observable.</p>

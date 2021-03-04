@@ -130,19 +130,22 @@ const so = (function () {
               )
             )()
           }
-        }
+        },
+        enumerable: true
       },
       // Propriedade prevValue que retorna o valor inicial do observable
       'prevValue': {
         get() {
           return observableState.getPrevObservableValue()
-        }
+        },
+        enumerable: true
       },
       // Propriedade initialValue que retorna o valor inicial do observable
       'initialValue': {
         get() {
           return observableState.getInitialObservableValue()
-        }
+        },
+        enumerable: true
       }
     }
   }
@@ -162,7 +165,8 @@ const so = (function () {
             observableState.setObservableValues(pipeableValue)
             return this
           }
-        }
+        },
+        enumerable: true
       }
     }
   }
@@ -195,12 +199,14 @@ const so = (function () {
               notifyObservableArray
             )()
           }
-        }
+        },
+        enumerable: true
       },
       'dispose': {
         get() {
           return subscribersState.clearSubscribers
-        }
+        },
+        enumerable: true
       },
       'add': {
         get() {
@@ -211,7 +217,8 @@ const so = (function () {
               notifyObservableArray
             )
           }
-        }
+        },
+        enumerable: true
       },
       'remove': {
         get() {
@@ -219,7 +226,8 @@ const so = (function () {
             observableArrayState.removeElement(element)
             notifyObservableArray()
           }
-        }
+        },
+        enumerable: true
       },
       'get': {
         get() {
@@ -229,7 +237,8 @@ const so = (function () {
             }
             return observableArrayState.getElement(index)
           }
-        }
+        },
+        enumerable: true
       },
       'getValue': {
         get() {
@@ -242,6 +251,21 @@ const so = (function () {
               return element()
             }
             return
+          }
+        },
+        enumerable: true
+      },
+      'flatMap': {
+        get() {
+          return function flatMap(callback) {
+            if (typeof callback !== 'function') {
+              throw new Error('flatMap should receive a function')
+            }
+            return this().map(function (item) {
+              return callback(item())
+            }).reduce(function (flatArray, array) {
+              return flatArray.concat(array)
+            }, [])
           }
         }
       }
@@ -268,7 +292,8 @@ const so = (function () {
               )
             )()
           }
-        }
+        },
+        enumerable: true
       }
     }
   }
@@ -276,7 +301,7 @@ const so = (function () {
   function createFnSubscribe(subscribersState, subscriber, notify) {
     return function subscribe() {
       if (typeof subscriber !== 'function') {
-        throw new Error('Subscribe must receive a callback function')
+        throw new Error('Subscribe should receive a callback function')
       }
       subscribersState.addSubscriber(subscriber)
       notify()
@@ -454,26 +479,17 @@ const so = (function () {
   }
 
   function createObservableArrayElement(observableArrayState, elements, notifyAll) {
-    if (Array.isArray(elements[0])) {
-      elements[0].forEach(element =>
-        createElementArray(
-          observableArrayState.addElement,
-          so.observable(element),
-          notifyAll
-        )
-      )
-    } else {
-      if (typeof elements === 'undefined' || elements.length === 0) {
-        return []
-      }
-      elements.forEach(element =>
-        createElementArray(
-          observableArrayState.addElement,
-          so.observable(element),
-          notifyAll
-        )
-      )
+    if (typeof elements === 'undefined' || elements.length === 0) {
+      return []
     }
+    elements.forEach(element =>
+      createElementArray(
+        observableArrayState.addElement,
+        so.observable(element),
+        notifyAll
+      )
+    )
+
   }
 
   const so = {
@@ -506,7 +522,10 @@ const so = (function () {
       // Compõe o objeto Observables
       Object.defineProperties(
         observable,
-        createObservableProps({ subscribersState, observableState })
+        combineProperties(
+          createObservableProps({ subscribersState, observableState }),
+          createPipeableObservableProps({ observableState })
+        )
       )
       // Retorna o Observable
       return observable
@@ -538,16 +557,19 @@ const so = (function () {
       // Compõe o objeto Observables
       Object.defineProperties(
         computedObservable,
-        createComputedObservableProps({
-          subscribersState,
-          observableState: computedObservableState,
-          subscriptionsDependencies: _dependencesSubscriptions
-        }),
-        createObservableProps({ subscribersState, observableState: computedObservableState }),
+        combineProperties(
+          createObservableProps({ subscribersState, observableState: computedObservableState }),
+          createComputedObservableProps({
+            subscribersState,
+            observableState: computedObservableState,
+            subscriptionsDependencies: _dependencesSubscriptions
+          })
+        )
       )
       // Retorna o Computed Observable
       return computedObservable
     },
+    // Cria Observable Array
     observableArray(...paramData) {
       const observableArrayState = createObservableArrayState()
       const subscribersState = createSubscribersState()
