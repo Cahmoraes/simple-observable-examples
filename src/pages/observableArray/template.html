@@ -35,10 +35,25 @@
               Se param for um objeto, deverá ser passado como ex.: $array()[0]()
             </p>
             <pre class="code">
-                const $array = so.observableArray([1, 2, 3, 4]) <br>
-                $array.remove(1) // remove number 2 <br> 
-                $array.remove($array.get(3)) // remove number 4
-              </pre>
+              const $array = so.observableArray([1, 2, 3]) <br>
+              $array.add(4) <br>
+              $array.remove(1) // remove number 2 <br> 
+              $array.remove($array.get(3)) // remove number 4
+            </pre>
+            <p>
+              <strong>clear()</strong>: Remove todas as ocorrências do ObservableArray.<br>
+              Além de limpar toda lista de subscribers do Array.
+            </p>
+            <p>
+              <strong>flatMap(function callback(currentValue[,index]))</strong><br>
+              O método flatMap() primeiro mapeia cada elemento usando uma função de mapeamento e, em seguida, nivela o resultado em um novo array. É idêntico a um map seguido por um flat de profundidade 1, mas flatMap é bastante útil e mescla ambos em um método um pouco mais eficiente.
+            </p>
+            <pre class="code">
+              const $arr = so.observableArray([1, 2, 3], [4, 5, 6]) <br>
+              console.log($arr()) // [[1, 2, 3], [4, 5, 6]] <br>
+              const flatArray = $arr.flatMap(item => item) <br>
+              console.log(flatArray) // [1, 2, 3, 4, 5, 6] 
+            </pre>
             <p>
               <strong>get(index)</strong>: Retorna elemento do array, do índice especificado. <br>
               Nota: Retorna como observable.

@@ -270,13 +270,14 @@ const so = (function () {
               if (typeof callback !== 'function') {
                 throw new Error('flatMap should receive a function')
               }
-              return this().map(function (item) {
-                return callback(item())
+              return this().map(function (item, index) {
+                return callback(item(), index)
               }).reduce(function (flatArray, array) {
                 return flatArray.concat(array)
               }, [])
             }
-          }
+          },
+          enumerable: true
         },
         'clear': {
           get() {
@@ -599,26 +600,23 @@ const so = (function () {
       return computedObservable
     },
     // Cria Observable Array
-    observableArray(...paramData) {
+    observableArray(...parameterData) {
       const observableArrayState = state.createObservableArrayState()
       const subscribersState = state.createSubscribersState()
-
-      function notifyObservableArray() {
-        functions.createFnNotifyAll(
-          subscribersState.getSubscribers,
-          observableArrayState.getElements
-        )()
-      }
-
+      const notifyObservableArray = functions.createFnNotifyAll(
+        subscribersState.getSubscribers,
+        observableArrayState.getElements
+      )
+      // Cria observableArray a partir do parameterData
       observableArrayTools
-        .createObservableArrayElement(observableArrayState, paramData, notifyObservableArray)
+        .createObservableArrayElement(observableArrayState, parameterData, notifyObservableArray)
 
-      function observableArray(...newParamValue) {
+      function observableArray(...newParameterValue) {
         return initialize
           .observableArray({
             observableArrayState,
             subscribersState,
-            newParamValue,
+            newParamValue: newParameterValue,
             notifyObservableArray
           })
       }
