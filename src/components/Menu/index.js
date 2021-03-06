@@ -50,12 +50,13 @@ export default class Menu extends Component {
   addEventLitenerMenu() {
     this._router.route.subscribe(path => {
       if (path !== '/') {
-        const item = this._element.querySelector(`[href*="/${path}"]`)
-        if (item) {
-          this.$_activeItem(item.parentElement)
+        const pathEnhancement = path.replace('/', '')
+        const menuItem = this._element.querySelector(`[href*="/${pathEnhancement}"]`)
+        if (menuItem) {
+          this.$_activeItem(menuItem.parentElement)
         }
       } else {
-        this.$_activeItem(this._element.querySelector(`[href]`))
+        this.$_activeItem(this._element.querySelector(`[href]`).parentElement)
       }
       this._navMenu.classList.remove(this._activeClass)
       this._menuHamburguer.classList.remove(this._activeClass)
@@ -89,8 +90,8 @@ export default class Menu extends Component {
     this.bindMethods()
     this.render()
     this.getElements()
-    this.addEventLitenerMenu()
     this.subscribeObservable()
+    this.addEventLitenerMenu()
     return this
   }
 }
