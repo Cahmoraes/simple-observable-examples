@@ -57,6 +57,8 @@ export default class Menu extends Component {
       } else {
         this.$_activeItem(this._element.querySelector(`[href]`))
       }
+      this._navMenu.classList.remove(this._activeClass)
+      this._menuHamburguer.classList.remove(this._activeClass)
     })
 
     this._menuHamburguer.addEventListener('click', () => {

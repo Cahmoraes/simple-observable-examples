@@ -8,8 +8,3 @@ import Router from './components/Router'
 const router = new Router().init()
 new Menu(router).init()
 new Main(router).init()
-
-const $arr = so.observableArray([1, 2, 3], [4, 5, 6])
-console.log($arr()) // [[1, 2, 3], [4, 5, 6]]
-const flatArray = $arr.flatMap(item => item)
-console.log(flatArray) // [1, 2, 3, 4, 5, 6]

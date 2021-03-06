@@ -1,7 +1,7 @@
 const so = (function () {
   // Utilitários de estados
   const state = {
-    createObservableState(state, getSubscribers) {
+    createObservableState({ state, getSubscribers }) {
 
       function managerSate(newState) {
         return { ...Object.assign(state, newState) }
@@ -30,7 +30,10 @@ const so = (function () {
       function setObservableValues(newValue) {
         setPrevObservableValue(getObservableValue())
         setObservableValue(newValue)
-        functions.createFnNotifyAll(getSubscribers, getObservableValue)()
+        functions.createFnNotifyAll({
+          getSubscribers,
+          getObservableValue
+        })()
       }
 
       return {
@@ -40,7 +43,7 @@ const so = (function () {
         getInitialObservableValue
       }
     },
-    createObservableComputedState(state, getSubscribers) {
+    createObservableComputedState({ state, getSubscribers }) {
 
       function managerSate(newState) {
         return { ...Object.assign(state, newState) }
@@ -52,7 +55,10 @@ const so = (function () {
 
       function setObservableValue() {
         managerSate({ computedValue: state.computedFn() })
-        functions.createFnNotifyAll(getSubscribers, getObservableValue)()
+        functions.createFnNotifyAll({
+          getSubscribers,
+          getObservableValue
+        })()
       }
 
       return {
@@ -144,19 +150,19 @@ const so = (function () {
   // Utilitários de propriedades
   const props = {
     createObservableProps({ subscribersState, observableState }) {
+
+      const notify = functions.createFnNotifyAll({
+        getSubscribers: subscribersState.getSubscribers,
+        getObservableValue: observableState.getObservableValue
+      })
+
       return {
         'subscribe': {
           get() {
-            return function subscribe(subscriber) {
-              return functions.createFnSubscribe(
-                subscribersState,
-                subscriber,
-                functions.createFnNotifyAll(
-                  subscribersState.getSubscribers,
-                  observableState.getObservableValue
-                )
-              )()
-            }
+            return functions.createFnSubscribe({
+              subscribersState,
+              notify
+            })
           },
           enumerable: true
         },
@@ -192,21 +198,18 @@ const so = (function () {
     },
     createObservableArrayProps({ subscribersState, observableArrayState }) {
 
-      const notifyObservableArray = functions.createFnNotifyAll(
-        subscribersState.getSubscribers,
-        observableArrayState.getElements
-      )
+      const notifyObservableArray = functions.createFnNotifyAll({
+        getSubscribers: subscribersState.getSubscribers,
+        getObservableValue: observableArrayState.getElements
+      })
 
       return {
         'subscribe': {
           get() {
-            return function subscribe(subscriber) {
-              return functions.createFnObservableArraySubscribe(
-                subscribersState,
-                subscriber,
-                notifyObservableArray
-              )()
-            }
+            return functions.createFnObservableArraySubscribe({
+              subscribersState,
+              notify: notifyObservableArray
+            })
           },
           enumerable: true
         },
@@ -218,13 +221,13 @@ const so = (function () {
         },
         'add': {
           get() {
-            return function add(...element) {
+            return function add(...elements) {
               observableArrayTools
-                .createObservableArrayElement(
+                .createObservableArrayElement({
                   observableArrayState,
-                  element,
-                  notifyObservableArray
-                )
+                  elements,
+                  notifyAll: notifyObservableArray
+                })
             }
           },
           enumerable: true
@@ -242,7 +245,7 @@ const so = (function () {
           get() {
             return function get(index) {
               if (typeof index !== 'number') {
-                throw new Error('index must be a type number')
+                throw new Error('index should be a type number')
               }
               return observableArrayState.getElement(index)
             }
@@ -268,7 +271,7 @@ const so = (function () {
           get() {
             return function flatMap(callback) {
               if (typeof callback !== 'function') {
-                throw new Error('flatMap should receive a function')
+                throw new Error('flatMap should receive a function as callback')
               }
               return this().map(function (item, index) {
                 return callback(item(), index)
@@ -296,20 +299,20 @@ const so = (function () {
       observableState,
       subscriptionsDependencies
     }) {
+
+      const notify = functions.createFnNotifyAll({
+        getSubscribers: subscribersState.getSubscribers,
+        getObservableValue: observableState.getObservableValue
+      })
+
       return {
         'subscribe': {
           get() {
-            return function subscribe(subscriber) {
-              return functions.createFnComputedSubscribe(
-                subscribersState,
-                subscriber,
-                subscriptionsDependencies,
-                functions.createFnNotifyAll(
-                  subscribersState.getSubscribers,
-                  observableState.getObservableValue
-                )
-              )()
-            }
+            return functions.createFnComputedSubscribe({
+              subscribersState,
+              subscriptionsDependencies,
+              notify
+            })
           },
           enumerable: true
         }
@@ -318,58 +321,68 @@ const so = (function () {
   }
   // Utilitários de funções
   const functions = {
-    createFnSubscribe(subscribersState, subscriber, notify) {
-      return function subscribe() {
+    createFnSubscribe({ subscribersState, notify }) {
+      return function subscribe(subscriber) {
         if (typeof subscriber !== 'function') {
           throw new Error('Subscribe should receive a callback function')
         }
         subscribersState.addSubscriber(subscriber)
         notify()
         return {
-          dispose: functions.createFnDispose(subscribersState.removeSubscriber, subscriber)
+          dispose: functions.createFnDispose({
+            removeSubscriber: subscribersState.removeSubscriber,
+            subscriberToRemove: subscriber
+          })
         }
       }
     },
-    createFnComputedSubscribe(
+    createFnComputedSubscribe({
       subscribersState,
-      subscriber,
       subscriptionsDependencies,
       notify
+    }
     ) {
-      return function subscribe() {
+      return function subscribe(subscriber) {
         if (typeof subscriber !== 'function') {
           throw new Error('Subscribe must receive a callback function')
         }
         subscribersState.addSubscriber(subscriber)
         notify()
         return {
-          dispose: functions.createFnComputedDispose(subscribersState.removeSubscriber, subscriber, subscriptionsDependencies)
+          dispose: functions.createFnComputedDispose({
+            removeSubscriber: subscribersState.removeSubscriber,
+            subscriberToRemove: subscriber,
+            subscriptionsDependencies
+          })
         }
       }
     },
-    createFnObservableArraySubscribe(subscribersState, subscriber, notify) {
-      return function subscribe() {
+    createFnObservableArraySubscribe({ subscribersState, notify }) {
+      return function subscribe(subscriber) {
         if (typeof subscriber !== 'function') {
           throw new Error('Subscribe must receive a callback function')
         }
         subscribersState.addSubscriber(subscriber)
         notify()
         return {
-          dispose: functions.createFnDispose(subscribersState.removeSubscriber, subscriber)
+          dispose: functions.createFnDispose({
+            removeSubscriber: subscribersState.removeSubscriber,
+            subscriberToRemove: subscriber
+          })
         }
       }
     },
-    createFnComputedDispose(
+    createFnComputedDispose({
       removeSubscriber,
       subscriberToRemove,
       subscriptionsDependencies
-    ) {
+    }) {
       return function dispose() {
         removeSubscriber(subscriberToRemove)
         computedObservableTools.removeComputedDependencies(subscriptionsDependencies)
       }
     },
-    createFnNotifyAll(getSubscribers, getObservableValue) {
+    createFnNotifyAll({ getSubscribers, getObservableValue }) {
       return function notifyAll() {
         if (!getSubscribers().length) return null
         getSubscribers().map(function (subscriber) {
@@ -377,7 +390,7 @@ const so = (function () {
         })
       }
     },
-    createFnDispose(removeSubscriber, subscriberToRemove) {
+    createFnDispose({ removeSubscriber, subscriberToRemove }) {
       return function dispose() {
         removeSubscriber(subscriberToRemove)
       }
@@ -397,9 +410,9 @@ const so = (function () {
   }
   // Utilitários de middleware
   const middlewareTools = {
-    createMiddlewareFnNext(observableState, newParamValue) {
+    createMiddlewareFnNext({ observableState, newParameterValue }) {
       return function (middlewareValue) {
-        observableState.setObservableValues(middlewareValue || newParamValue)
+        observableState.setObservableValues(middlewareValue || newParameterValue)
         return observableState.getObservableValue()
       }
     },
@@ -409,13 +422,13 @@ const so = (function () {
         this,
         observableState.getObservableValue(),
         newParameterValue,
-        middlewareTools.createMiddlewareFnNext(observableState, newParameterValue)
+        middlewareTools.createMiddlewareFnNext({ observableState, newParameterValue })
       )
     }
   }
   // Utilitários de ComputedObservable
   const computedObservableTools = {
-    validateComputedObervableParams(computedFn, dependencies) {
+    validateComputedObervableParams({ computedFn, dependencies }) {
       // Verifica se computedFn não é uma função
       if (typeof computedFn !== 'function') {
         throw new Error('computedFn must be a function')
@@ -439,20 +452,20 @@ const so = (function () {
   }
   // Utilitários de Observable Array
   const observableArrayTools = {
-    createElementArray(addElement, element, notifyAll) {
+    createElementArray({ addElement, element, notifyAll }) {
       addElement(element)
       element.subscribe(notifyAll)
     },
-    createObservableArrayElement(observableArrayState, elements, notifyAll) {
+    createObservableArrayElement({ observableArrayState, elements, notifyAll }) {
       if (typeof elements === 'undefined' || elements.length === 0) {
         return []
       }
       elements.forEach(element =>
-        observableArrayTools.createElementArray(
-          observableArrayState.addElement,
-          so.observable(element),
+        observableArrayTools.createElementArray({
+          addElement: observableArrayState.addElement,
+          element: so.observable(element),
           notifyAll
-        )
+        })
       )
     }
   }
@@ -477,11 +490,9 @@ const so = (function () {
       observableState.setObservableValues(newParameterValue)
       return observableState.getObservableValue()
     },
-    computedObservable(dependencies, observableState) {
+    computedObservable({ dependencies, observableState }) {
 
-      function setObservableComputedValue() {
-        observableState.setObservableValue()
-      }
+      const setObservableComputedValue = () => observableState.setObservableValue()
 
       return {
         createDependenciesState() {
@@ -511,11 +522,12 @@ const so = (function () {
       subscribersState.clearSubscribers()
 
       observableArrayTools
-        .createObservableArrayElement(
+        .createObservableArrayElement({
           observableArrayState,
-          newParamValue,
-          notifyObservableArray
-        )
+          elements: newParamValue,
+          notifyAll: notifyObservableArray
+        })
+
       notifyObservableArray()
     }
   }
@@ -532,7 +544,10 @@ const so = (function () {
         currentValue: parameterValue
       }
       // Gerencia os estados do Observable
-      const observableState = state.createObservableState(initialState, subscribersState.getSubscribers)
+      const observableState = state.createObservableState({
+        state: initialState,
+        getSubscribers: subscribersState.getSubscribers
+      })
       // Gerencia a chamada do Observable
       function observable(newParameterValue) {
         // Cria Middleware
@@ -562,7 +577,9 @@ const so = (function () {
     // Cria Computed Observable
     computed(computedFn, dependencies = null) {
       // Verifica se os parâmetros são válidos
-      computedObservableTools.validateComputedObervableParams(computedFn, dependencies)
+      computedObservableTools.validateComputedObervableParams({
+        computedFn, dependencies
+      })
       // Inicializa o estado do Array de inscritos
       const subscribersState = state.createSubscribersState()
       // Estatos iniciais do Observable
@@ -571,15 +588,15 @@ const so = (function () {
         computedFn: computedFn
       }
       // Gerencia os estados do Observable
-      const computedObservableState = state.createObservableComputedState(
-        initialState,
-        subscribersState.getSubscribers
-      )
+      const computedObservableState = state.createObservableComputedState({
+        state: initialState,
+        getSubscribers: subscribersState.getSubscribers
+      })
       // Inicializa a construção do Computed Observable
-      const _dependencesSubscriptions = initialize.computedObservable(
+      const _dependencesSubscriptions = initialize.computedObservable({
         dependencies,
-        computedObservableState
-      ).createDependenciesState()
+        observableState: computedObservableState
+      }).createDependenciesState()
       // Gerencia a chamada do Computed Observable
       function computedObservable() {
         return computedObservableState.getObservableValue()
@@ -588,7 +605,10 @@ const so = (function () {
       Object.defineProperties(
         computedObservable,
         functions.combineProperties(
-          props.createObservableProps({ subscribersState, observableState: computedObservableState }),
+          props.createObservableProps({
+            subscribersState,
+            observableState: computedObservableState
+          }),
           props.createComputedObservableProps({
             subscribersState,
             observableState: computedObservableState,
@@ -603,13 +623,17 @@ const so = (function () {
     observableArray(...parameterData) {
       const observableArrayState = state.createObservableArrayState()
       const subscribersState = state.createSubscribersState()
-      const notifyObservableArray = functions.createFnNotifyAll(
-        subscribersState.getSubscribers,
-        observableArrayState.getElements
-      )
-      // Cria observableArray a partir do parameterData
+      const notifyObservableArray = functions.createFnNotifyAll({
+        getSubscribers: subscribersState.getSubscribers,
+        getObservableValue: observableArrayState.getElements
+      })
+
       observableArrayTools
-        .createObservableArrayElement(observableArrayState, parameterData, notifyObservableArray)
+        .createObservableArrayElement({
+          observableArrayState,
+          elements: parameterData,
+          notifyAll: notifyObservableArray
+        })
 
       function observableArray(...newParameterValue) {
         return initialize
