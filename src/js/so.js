@@ -125,7 +125,7 @@ const so = (function () {
       }
 
       function getSubscribers() {
-        return state
+        return [...state]
       }
 
       function removeSubscriber(subscriber) {
@@ -317,6 +317,21 @@ const so = (function () {
           enumerable: true
         }
       }
+    },
+    createMemoObservableProps({ cache, fnName }) {
+      return {
+        'name': {
+          value: fnName
+        },
+        'release': {
+          get() {
+            return function release() {
+              cache.clear()
+            }
+          },
+          enumerable: true
+        }
+      }
     }
   }
   // Utilitários de funções
@@ -406,6 +421,24 @@ const so = (function () {
       return properties.reduce(function (combinedProperties, property) {
         return Object.assign(combinedProperties, property)
       }, {})
+    },
+    memoizer(fn) {
+      const cache = new Map()
+      const memoFn = (...args) => {
+        const key = JSON.stringify(args)
+        if (cache.has(key)) {
+          // console.log(cache.has(key))
+          return cache.get(key)
+        } else {
+          const result = fn(...args)
+          cache.set(key, result)
+          return result
+        }
+      }
+      Object.defineProperties(memoFn,
+        props.createMemoObservableProps({ cache, fnName: `${fn.name}M` })
+      )
+      return memoFn
     }
   }
   // Utilitários de middleware
@@ -655,6 +688,48 @@ const so = (function () {
 
       return observableArray
     },
+    // Cria Observable
+    memo(parameterValue, middleware = null) {
+      // Inicializa o estado do Array de inscritos
+      const subscribersState = state.createSubscribersState()
+      // Estatos iniciais do Observable
+      const initialState = {
+        initialValue: parameterValue,
+        prevValue: null,
+        currentValue: parameterValue
+      }
+      // Gerencia os estados do Observable
+      const observableState = state.createObservableState({
+        state: initialState,
+        getSubscribers: subscribersState.getSubscribers
+      })
+      // Gerencia a chamada do Observable
+      function memo(newParameterValue) {
+        // Cria Middleware
+        const createdMiddleware = middlewareTools.createMiddleware({
+          middleware,
+          observableState,
+          newParameterValue
+        })
+
+        return initialize.observable({
+          observableState,
+          newParameterValue,
+          createdMiddleware
+        })
+      }
+      // Compõe o objeto Observables
+      const observableMemo = functions.memoizer(memo)
+      Object.defineProperties(
+        observableMemo,
+        functions.combineProperties(
+          props.createObservableProps({ subscribersState, observableState }),
+          props.createPipeProp({ observableState })
+        )
+      )
+      // Retorna o Memo Observable
+      return observableMemo
+    }
   }
 
   return so
