@@ -81,7 +81,7 @@ const so = (function () {
       }
 
       function getElements() {
-        return state
+        return [...state]
       }
 
       function getElement(index) {
@@ -427,7 +427,6 @@ const so = (function () {
       const memoFn = (...args) => {
         const key = JSON.stringify(args)
         if (cache.has(key)) {
-          // console.log(cache.has(key))
           return cache.get(key)
         } else {
           const result = fn(...args)
@@ -457,6 +456,15 @@ const so = (function () {
         newParameterValue,
         middlewareTools.createMiddlewareFnNext({ observableState, newParameterValue })
       )
+    }
+  }
+  // Utilitários de Observable
+  const observableTools = {
+    validateObservableParams({ parameterValue }) {
+      if (typeof parameterValue === 'function') {
+        return parameterValue()
+      }
+      return parameterValue
     }
   }
   // Utilitários de ComputedObservable
@@ -568,13 +576,16 @@ const so = (function () {
   const so = {
     // Cria Observable
     observable(parameterValue, middleware = null) {
+      const initialValue = observableTools.validateObservableParams({
+        parameterValue
+      })
       // Inicializa o estado do Array de inscritos
       const subscribersState = state.createSubscribersState()
       // Estatos iniciais do Observable
       const initialState = {
-        initialValue: parameterValue,
+        initialValue,
         prevValue: null,
-        currentValue: parameterValue
+        currentValue: initialValue
       }
       // Gerencia os estados do Observable
       const observableState = state.createObservableState({
@@ -689,14 +700,17 @@ const so = (function () {
       return observableArray
     },
     // Cria Observable
-    memo(parameterValue, middleware = null) {
+    memo(parameterValue) {
+      const initialValue = observableTools.validateObservableParams({
+        parameterValue
+      })
       // Inicializa o estado do Array de inscritos
       const subscribersState = state.createSubscribersState()
       // Estatos iniciais do Observable
       const initialState = {
-        initialValue: parameterValue,
+        initialValue,
         prevValue: null,
-        currentValue: parameterValue
+        currentValue: initialValue
       }
       // Gerencia os estados do Observable
       const observableState = state.createObservableState({
@@ -705,17 +719,9 @@ const so = (function () {
       })
       // Gerencia a chamada do Observable
       function memo(newParameterValue) {
-        // Cria Middleware
-        const createdMiddleware = middlewareTools.createMiddleware({
-          middleware,
-          observableState,
-          newParameterValue
-        })
-
         return initialize.observable({
           observableState,
-          newParameterValue,
-          createdMiddleware
+          newParameterValue
         })
       }
       // Compõe o objeto Observables

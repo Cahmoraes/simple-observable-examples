@@ -44,6 +44,13 @@ export default [
     }
   },
   {
+    path: `${getEnvironment()}/memoObservable`,
+    component: 'memoObservable',
+    options: {
+      title: 'Memo Observable'
+    }
+  },
+  {
     path: `${getEnvironment()}/loading`,
     component: 'loading',
     options: {
