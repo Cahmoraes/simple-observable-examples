@@ -1,5 +1,9 @@
 const sd = (function () {
   const simpleDecorator = {
+    /**
+     * @param {object} thisArg
+     * @param {object} handler
+     * */
     property(thisArg, handler) {
       try {
         if (typeof thisArg !== 'object')
@@ -25,6 +29,10 @@ const sd = (function () {
         console.error(error.message)
       }
     },
+    /**
+   * @param {function} clazz
+   * @param {object} handler
+   * */
     method(clazz, handler) {
       try {
         if (typeof clazz !== 'function')
@@ -33,20 +41,26 @@ const sd = (function () {
           throw new Error('handler should be an Object')
 
         Object.keys(handler).forEach(property => {
-
-          if (!Array.isArray(handler[property]))
-            throw new Error('decorators should be an Array')
-
-          handler[property].reverse().forEach(decorator => {
-            const method = clazz.prototype[property]
-            if (method) {
+          if (Array.isArray(handler[property])) {
+            handler[property].reverse().forEach(decorator => {
+              const method = clazz.prototype[property]
+              if (typeof method !== 'function') {
+                throw new Error(`${property} isn't at prototype of ${clazz.name}`)
+              }
               clazz.prototype[property] = function (...args) {
                 return decorator(method.bind(this), property, args)
               }
-            } else {
+            })
+          } else {
+            const method = clazz.prototype[property]
+            if (typeof method !== 'function') {
               throw new Error(`${property} isn't at prototype of ${clazz.name}`)
             }
-          })
+            const decorator = handler[property]
+            clazz.prototype[property] = function (...args) {
+              return decorator(method.bind(this), property, args)
+            }
+          }
         })
       } catch (error) {
         console.error(error.message)
