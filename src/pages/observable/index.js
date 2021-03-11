@@ -1,4 +1,6 @@
+import sd from '../../js/sd'
 import so from '../../js/so'
+import { domInject } from '../../js/utils/decorators/decoratos'
 import template from './template.html'
 
 export default class Observable {
@@ -7,9 +9,14 @@ export default class Observable {
     this._$obs_1 = so.observable(0)
     this._$computedInicial = so.computed(() => this._$obs_1.initialValue, [this._$obs_1])
     this._$computedPrev = so.computed(() => this._$obs_1.prevValue, [this._$obs_1])
-    this._button_1 = null
-    this._inicialValue = null
-    this._prevValue = null
+    sd.property(
+      this,
+      {
+        _button_1: domInject('#button_1'),
+        _inicialValue: domInject('#inicialValue'),
+        _prevValue: domInject('#prevValue')
+      }
+    )
     this._config = {
       title: 'Observable',
       button_1: 'button_1'
@@ -18,12 +25,6 @@ export default class Observable {
 
   render() {
     this._root.insertAdjacentHTML('beforeend', template(this._config))
-  }
-
-  getElements() {
-    this._button_1 = document.getElementById('button_1')
-    this._prevValue = document.getElementById('prevValue')
-    this._inicialValue = document.getElementById('inicialValue')
   }
 
   addEventListener() {
@@ -48,7 +49,6 @@ export default class Observable {
 
   init() {
     this.render()
-    this.getElements()
     this.addEventListener()
     this.subscribeObservable()
     return this

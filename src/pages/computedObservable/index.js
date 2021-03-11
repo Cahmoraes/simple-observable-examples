@@ -1,14 +1,21 @@
 import so from '../../js/so'
 import template from './template.html'
 import './styles'
+import sd from '../../js/sd'
+import { domInject } from '../../js/utils/decorators/decoratos'
 
 export default class computedObservable {
   constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
-    this._btnCadastrar = null
-    this._input_1 = null
-    this._input_2 = null
-    this._computedValue = null
+    sd.property(
+      this,
+      {
+        _input_1: domInject('#input_1'),
+        _input_2: domInject('#input_2'),
+        _computedValue: domInject('#computed_value')
+      }
+    )
+
     this._$obs_1 = so.observable('')
     this._$obs_2 = so.observable('')
     this._$computed = so.computed(() => {
@@ -21,12 +28,6 @@ export default class computedObservable {
       label_2: 'Sobrenome',
       label_3: 'Valor computado'
     }
-  }
-
-  getElements() {
-    this._input_1 = document.getElementById('input_1')
-    this._input_2 = document.getElementById('input_2')
-    this._computedValue = document.getElementById('computed-value')
   }
 
   subscribeObservable() {
@@ -51,7 +52,6 @@ export default class computedObservable {
 
   init() {
     this.render()
-    this.getElements()
     this.subscribeObservable()
     this.addEventListenerInputs()
     return this

@@ -504,7 +504,7 @@ const so = (function () {
       elements.forEach(element =>
         observableArrayTools.createElementArray({
           addElement: observableArrayState.addElement,
-          element: so.observable(element),
+          element: simpleObservable.observable(element),
           notifyAll
         })
       )
@@ -573,7 +573,7 @@ const so = (function () {
     }
   }
   // SO
-  const so = {
+  const simpleObservable = {
     // Cria Observable
     observable(parameterValue, middleware = null) {
       const initialValue = observableTools.validateObservableParams({
@@ -738,7 +738,7 @@ const so = (function () {
     }
   }
 
-  return so
+  return simpleObservable
 })()
 
 export default so

@@ -12,7 +12,7 @@ module.exports = {
       import: './src/index.js',
       dependOn: 'shared'
     },
-    shared: './src/js/so.js'
+    shared: ['./src/js/so.js', './src/js/sd.js']
   },
   devServer: {
     historyApiFallback: true
@@ -52,7 +52,7 @@ module.exports = {
       title: '404',
       filename: '404.html',
       template: './src/404.html',
-      chunks: ['main', 'shared'],
+      chunks: ['main'],
       inject: true,
       minify: {
         removeComments: true,

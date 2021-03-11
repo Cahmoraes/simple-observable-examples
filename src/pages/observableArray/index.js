@@ -1,4 +1,6 @@
+import sd from '../../js/sd'
 import so from '../../js/so'
+import { domInject } from '../../js/utils/decorators/decoratos'
 import './styles'
 import template from './template.html'
 
@@ -6,30 +8,25 @@ import template from './template.html'
 export default class ObservableArray {
   constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
-    this._btnCadastrar = null
-    this._input_1 = null
-    this._input_2 = null
-    this._arraylength = null
-    this._lista = null
+    sd.property(
+      this,
+      {
+        _btnCadastrar: domInject('#btn_cadastrar'),
+        _input_1: domInject('#input_1'),
+        _input_2: domInject('#input_2'),
+        _listaPessoas: domInject('#lista'),
+        _arraylength: domInject('#arraylength')
+      }
+    )
     this._$array = so.observableArray({ nome: 'caique', idade: 22 })
-
     this._computedLength = so.computed(() => {
       return `Elementos: (${this._$array().length})`
     }, [this._$array])
-
     this._config = {
       title: 'Observable Array',
       label_1: 'Nome',
       label_2: 'Idade'
     }
-  }
-
-  getElements() {
-    this._btnCadastrar = document.getElementById('btn-cadastrar')
-    this._input_1 = document.getElementById('input_1')
-    this._input_2 = document.getElementById('input_2')
-    this._listaPessoas = document.getElementById('lista')
-    this._arraylength = document.getElementById('arraylength')
   }
 
   render() {
@@ -96,7 +93,6 @@ export default class ObservableArray {
 
   init() {
     this.render()
-    this.getElements()
     this.subscribeArray()
     this.addEventListenerRemover()
     this.addEventListenerCadastrar()

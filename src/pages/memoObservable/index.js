@@ -1,14 +1,22 @@
 import so from '../../js/so'
+import sd from '../../js/sd'
 import template from './template.html'
+import { domInject } from '../../js/utils/decorators/decoratos'
 
 export default class memoObservable {
   constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     this._btnCadastrar = null
-    this._input_1 = null
+    sd.property(
+      this,
+      {
+        _input_1: domInject('#input_1'),
+        _btnRelease: domInject('#btnRelease'),
+        _btnCadastrar: domInject('#btnCadastrar'),
+        _output_1: domInject('#output_1')
+      }
+    )
     this._$memo_1 = so.memo()
-    this._output_1 = null
-
     this._config = {
       title: 'Memo Observable',
       label_1: 'Digite um valor para memorizar:',
@@ -20,13 +28,6 @@ export default class memoObservable {
       btnCadastrar: 'btnCadastrar',
       btnRelease: 'btnRelease',
     }
-  }
-
-  getElements() {
-    this._input_1 = document.getElementById(this._config.input_1)
-    this._btnRelease = document.getElementById(this._config.btnRelease)
-    this._btnCadastrar = document.getElementById(this._config.btnCadastrar)
-    this._output_1 = document.getElementById(this._config.output_1)
   }
 
   subscribeObservable() {
@@ -51,7 +52,6 @@ export default class memoObservable {
 
   init() {
     this.render()
-    this.getElements()
     this.subscribeObservable()
     this.addEventListenerInputs()
     return this
