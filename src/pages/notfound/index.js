@@ -3,7 +3,7 @@ import './styles.scss'
 import notfoundImg from '../../assets/img/404.png'
 
 export default class NotFound {
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
+  constructor (element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     this._config = {
       title: 'Página não encontrada',
@@ -11,7 +11,7 @@ export default class NotFound {
     }
   }
 
-  addEventListener() {
+  addEventListener () {
     const skeleton = this._root.querySelector('.skeleton')
     const img = this._root.querySelector('img')
     img.addEventListener('load', (e) => {
@@ -21,11 +21,11 @@ export default class NotFound {
     })
   }
 
-  render() {
+  render () {
     this._root.insertAdjacentHTML('beforeend', template(this._config))
   }
 
-  init() {
+  init () {
     this.render()
     this.addEventListener()
     return this

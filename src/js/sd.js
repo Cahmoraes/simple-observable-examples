@@ -4,12 +4,14 @@ const sd = (function () {
      * @param {object} thisArg
      * @param {object} handler
      * */
-    property(thisArg, handler) {
+    property (thisArg, handler) {
       try {
-        if (typeof thisArg !== 'object')
+        if (typeof thisArg !== 'object') {
           throw new Error('ThisArgs should be an Object Instance')
-        if (typeof handler !== 'object')
+        }
+        if (typeof handler !== 'object') {
           throw new Error('handler should be an Object')
+        }
 
         Object.keys(handler).forEach(property => {
           if (Array.isArray(handler[property])) {
@@ -24,7 +26,6 @@ const sd = (function () {
             decorator(thisArg, property)
           }
         })
-
       } catch (error) {
         console.error(error.message)
       }
@@ -33,12 +34,15 @@ const sd = (function () {
    * @param {function} clazz
    * @param {object} handler
    * */
-    method(clazz, handler) {
+    method (clazz, handler) {
       try {
-        if (typeof clazz !== 'function')
+        if (typeof clazz !== 'function') {
           throw new Error('Clazz should be a Constructor Function')
-        if (typeof handler !== 'object')
+        }
+
+        if (typeof handler !== 'object') {
           throw new Error('handler should be an Object')
+        }
 
         Object.keys(handler).forEach(property => {
           if (Array.isArray(handler[property])) {

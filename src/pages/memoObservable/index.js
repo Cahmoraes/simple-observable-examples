@@ -4,7 +4,7 @@ import template from './template.html'
 import { domInject } from '../../js/utils/decorators/decoratos'
 
 export default class memoObservable {
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
+  constructor (element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     this._btnCadastrar = null
     sd.property(
@@ -26,17 +26,17 @@ export default class memoObservable {
       input_1: 'input_1',
       output_1: 'output_1',
       btnCadastrar: 'btnCadastrar',
-      btnRelease: 'btnRelease',
+      btnRelease: 'btnRelease'
     }
   }
 
-  subscribeObservable() {
+  subscribeObservable () {
     this._$memo_1.subscribe(memoValue => {
       this._output_1.textContent = memoValue
     })
   }
 
-  addEventListenerInputs() {
+  addEventListenerInputs () {
     this._btnCadastrar.addEventListener('click', () => {
       this._$memo_1(this._input_1.value)
     })
@@ -46,11 +46,11 @@ export default class memoObservable {
     })
   }
 
-  render() {
+  render () {
     this._root.insertAdjacentHTML('beforeend', template(this._config))
   }
 
-  init() {
+  init () {
     this.render()
     this.subscribeObservable()
     this.addEventListenerInputs()

@@ -1,2 +1,2 @@
 import Link from '../components/Router/Link'
-customElements.define('app-link', Link, { extends: "a" })
+window.customElements.define('app-link', Link, { extends: 'a' })

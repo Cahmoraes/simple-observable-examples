@@ -5,8 +5,7 @@ import Component from '../../models/component'
 import Atom from './atom.html'
 
 export default class Menu extends Component {
-
-  constructor(router, element = document.getElementById('menu')) {
+  constructor (router, element = document.getElementById('menu')) {
     super(element)
     this._router = router
     this._config = { title: this.titleSpinner() }
@@ -18,11 +17,11 @@ export default class Menu extends Component {
     this._menuContainer = null
   }
 
-  render() {
-    this._element.insertAdjacentHTML('beforeend', template(this._config))
+  render () {
+    return this._element.insertAdjacentHTML('beforeend', template(this._config))
   }
 
-  subscribeObservable() {
+  subscribeObservable () {
     this.$_activeItem.subscribe(activeItem => {
       if (!activeItem) return
       this._menuItems.forEach(item => item.classList.remove(this._activeClass))
@@ -31,14 +30,14 @@ export default class Menu extends Component {
     })
   }
 
-  getElements() {
+  getElements () {
     this._menuItems = [...this._element.querySelectorAll('li')]
     this._menuHamburguer = this._element.querySelector('[data-menu="hamburguer"]')
     this._navMenu = this._element.querySelector('[data-menu="nav"]')
     this._menuContainer = this._element.querySelector('[data-menu="container"]')
   }
 
-  handleOutsideClick(event) {
+  handleOutsideClick (event) {
     const clickedElement = event.target
     if (!this._menuContainer.contains(clickedElement)) {
       this._navMenu.classList.remove(this._activeClass)
@@ -47,7 +46,7 @@ export default class Menu extends Component {
     }
   }
 
-  addEventLitenerMenu() {
+  addEventLitenerMenu () {
     this._router.route.subscribe(path => {
       if (path !== '/') {
         const pathEnhancement = path.replace('/', '')
@@ -56,7 +55,7 @@ export default class Menu extends Component {
           this.$_activeItem(menuItem.parentElement)
         }
       } else {
-        this.$_activeItem(this._element.querySelector(`[href]`).parentElement)
+        this.$_activeItem(this._element.querySelector('[href]').parentElement)
       }
       this._navMenu.classList.remove(this._activeClass)
       this._menuHamburguer.classList.remove(this._activeClass)
@@ -69,7 +68,7 @@ export default class Menu extends Component {
     })
   }
 
-  titleSpinner() {
+  titleSpinner () {
     return `
     Simple${Atom({
       width: 35,
@@ -82,11 +81,11 @@ export default class Menu extends Component {
     `
   }
 
-  bindMethods() {
+  bindMethods () {
     this.handleOutsideClick = this.handleOutsideClick.bind(this)
   }
 
-  init() {
+  init () {
     this.bindMethods()
     this.render()
     this.getElements()

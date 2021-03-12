@@ -4,9 +4,8 @@ import { domInject } from '../../js/utils/decorators/decoratos'
 import './styles'
 import template from './template.html'
 
-
 export default class ObservableArray {
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
+  constructor (element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     sd.property(
       this,
@@ -29,15 +28,15 @@ export default class ObservableArray {
     }
   }
 
-  render() {
+  render () {
     this._root.insertAdjacentHTML('beforeend', template(this._config))
   }
 
-  remove() {
+  remove () {
     console.log('remove')
   }
 
-  subscribeArray() {
+  subscribeArray () {
     this._$array.subscribe(pessoas => {
       this._listaPessoas.innerHTML = pessoas.map((pessoa, index) => (
         `<li>
@@ -52,22 +51,22 @@ export default class ObservableArray {
     })
   }
 
-  createRemovePessoaBtn(index) {
+  createRemovePessoaBtn (index) {
     const btn = document.createElement('button')
     btn.textContent = 'X'
     btn.dataset.remove = `${index}`
     return btn.outerHTML
   }
 
-  createPessoa(nome, idade) {
+  createPessoa (nome, idade) {
     return { nome, idade }
   }
 
-  removePessoaFromList(index) {
+  removePessoaFromList (index) {
     this._$array.remove(index)
   }
 
-  addEventListenerCadastrar() {
+  addEventListenerCadastrar () {
     this._root.querySelector('form').addEventListener('submit', event => {
       event.preventDefault()
     })
@@ -81,7 +80,7 @@ export default class ObservableArray {
     })
   }
 
-  addEventListenerRemover() {
+  addEventListenerRemover () {
     this._listaPessoas.addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON') {
         const button = event.target
@@ -91,7 +90,7 @@ export default class ObservableArray {
     })
   }
 
-  init() {
+  init () {
     this.render()
     this.subscribeArray()
     this.addEventListenerRemover()

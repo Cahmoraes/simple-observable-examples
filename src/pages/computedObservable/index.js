@@ -5,7 +5,7 @@ import sd from '../../js/sd'
 import { domInject } from '../../js/utils/decorators/decoratos'
 
 export default class computedObservable {
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
+  constructor (element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     sd.property(
       this,
@@ -30,11 +30,13 @@ export default class computedObservable {
     }
   }
 
-  subscribeObservable() {
-    this._$computed.subscribe(value => this._computedValue.textContent = value)
+  subscribeObservable () {
+    this._$computed.subscribe(value => {
+      this._computedValue.textContent = value
+    })
   }
 
-  addEventListenerInputs() {
+  addEventListenerInputs () {
     this._input_1.addEventListener('input', (event) => {
       const value = event.target.value
       this._$obs_1(value)
@@ -46,11 +48,11 @@ export default class computedObservable {
     })
   }
 
-  render() {
+  render () {
     this._root.insertAdjacentHTML('beforeend', template(this._config))
   }
 
-  init() {
+  init () {
     this.render()
     this.subscribeObservable()
     this.addEventListenerInputs()

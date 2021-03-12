@@ -5,7 +5,7 @@ import sd from '../../js/sd'
 import { domInject } from '../../js/utils/decorators/decoratos'
 
 export default class Middleware {
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
+  constructor (element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     sd.property(
       this,
@@ -31,10 +31,9 @@ export default class Middleware {
       output_1: 'output_1',
       output_2: 'output_2'
     }
-
   }
 
-  createObservable() {
+  createObservable () {
     this._$obs_1 = so.observable('', (prevValue, newValue, next) => {
       this._output_1.textContent = prevValue
       this._output_2.textContent = newValue
@@ -42,18 +41,18 @@ export default class Middleware {
     })
   }
 
-  addEventListenerInputs() {
+  addEventListenerInputs () {
     this._input_1.addEventListener('input', (event) => {
       const { target: { value } } = event
       this._$obs_1(value)
     })
   }
 
-  render() {
+  render () {
     this._root.insertAdjacentHTML('beforeend', template(this._config))
   }
 
-  init() {
+  init () {
     this.render()
     this.createObservable()
     this.addEventListenerInputs()

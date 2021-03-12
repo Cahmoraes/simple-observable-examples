@@ -1,8 +1,8 @@
 import getEnvironment from '../../../js/utils/getEnvironment'
 import RouterService from '../router.service'
 
-export default class Link extends HTMLAnchorElement {
-  constructor() {
+export default class Link extends window.HTMLAnchorElement {
+  constructor () {
     super()
 
     const currentPath = this.getAttribute('href')
@@ -11,7 +11,7 @@ export default class Link extends HTMLAnchorElement {
     this._path = this.getAttribute('href')
   }
 
-  connectedCallback() {
+  connectedCallback () {
     this.addEventListener('click', (event) => {
       event.preventDefault()
       RouterService.navigate(this._path)

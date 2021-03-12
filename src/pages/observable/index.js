@@ -4,7 +4,7 @@ import { domInject } from '../../js/utils/decorators/decoratos'
 import template from './template.html'
 
 export default class Observable {
-  constructor(element = document.getElementById(process.env.ROOT_ELEMENT)) {
+  constructor (element = document.getElementById(process.env.ROOT_ELEMENT)) {
     this._root = element
     this._$obs_1 = so.observable(0)
     this._$computedInicial = so.computed(() => this._$obs_1.initialValue, [this._$obs_1])
@@ -23,17 +23,17 @@ export default class Observable {
     }
   }
 
-  render() {
+  render () {
     this._root.insertAdjacentHTML('beforeend', template(this._config))
   }
 
-  addEventListener() {
+  addEventListener () {
     this._button_1.addEventListener('click', () => {
       this._$obs_1(this._$obs_1() + 1)
     })
   }
 
-  subscribeObservable() {
+  subscribeObservable () {
     this._$obs_1.subscribe(value => {
       this._button_1.textContent = `Valor atual: (${value})`
     })
@@ -47,7 +47,7 @@ export default class Observable {
     })
   }
 
-  init() {
+  init () {
     this.render()
     this.addEventListener()
     this.subscribeObservable()

@@ -59,7 +59,6 @@ export default [
   },
   {
     path: '*',
-    component: `${getEnvironment()}/notfound`,
     component: 'notfound',
     options: {
       title: 'Página não encontrada'
