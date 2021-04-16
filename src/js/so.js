@@ -91,7 +91,7 @@ const so = (function () {
         if (typeof element === 'number') {
           newState = state.filter((_, index) => index !== element)
         }
-        if (typeof element === 'function') {
+        if (functions.isFunction(element)) {
           newState = state.filter(el => el !== element)
         }
         if (typeof element === 'object') {
@@ -262,7 +262,7 @@ const so = (function () {
         flatMap: {
           get () {
             return function flatMap (callback) {
-              if (typeof callback !== 'function') {
+              if (!functions.isFunction(callback)) {
                 throw new Error('flatMap should receive a function as callback')
               }
               return this().map(function (item, index) {
@@ -429,6 +429,19 @@ const so = (function () {
         props.createMemoObservableProps({ cache, fnName: `${fn.name}M` })
       )
       return memoFn
+    },
+    hasProperty (target, property) {
+      return Reflect.has(target, property)
+    },
+    typeCheck (type) {
+      const stringType = Object.prototype.toString.call(type)
+      return stringType.substring(
+        stringType.indexOf(' ') + 1,
+        stringType.indexOf(']')
+      ).toLowerCase()
+    },
+    isFunction (target) {
+      return this.typeCheck(target) === 'function'
     }
   }
   // Utilitários de middleware
@@ -440,7 +453,7 @@ const so = (function () {
       }
     },
     createMiddleware ({ middleware, observableState, newParameterValue }) {
-      if (typeof middleware !== 'function') return false
+      if (!functions.isFunction(middleware)) return false
       return middleware.bind(
         this,
         observableState.getObservableValue(),
@@ -452,7 +465,7 @@ const so = (function () {
   // Utilitários de Observable
   const observableTools = {
     validateObservableParams ({ parameterValue }) {
-      if (typeof parameterValue === 'function') {
+      if (functions.isFunction(parameterValue)) {
         return parameterValue()
       }
       return parameterValue
@@ -462,7 +475,7 @@ const so = (function () {
   const computedObservableTools = {
     validateComputedObervableParams ({ computedFn, dependencies }) {
       // Verifica se computedFn não é uma função
-      if (typeof computedFn !== 'function') {
+      if (!functions.isFunction(computedFn)) {
         throw new Error('computedFn must be a function')
       }
       // Verifica se dependencies não é um array
@@ -473,7 +486,7 @@ const so = (function () {
       if (dependencies.length === 0) {
         throw new Error('dependencies is empty')
       } else {
-        if (!Object.prototype.hasOwnProperty.call(dependencies[0], 'subscribe')) {
+        if (!functions.hasProperty(dependencies[0], 'subscribe')) {
           throw new Error('dependencie must be a observable')
         }
       }
@@ -507,10 +520,10 @@ const so = (function () {
       if (typeof newParameterValue === 'undefined') {
         return observableState.getObservableValue()
       }
-      if (typeof createdMiddleware === 'function') {
+      if (functions.isFunction(createdMiddleware)) {
         createdMiddleware()
       }
-      if (typeof newParameterValue === 'function') {
+      if (functions.isFunction(newParameterValue)) {
         const callbackEvaluated = newParameterValue(observableState.getObservableValue())
         if (typeof callbackEvaluated === 'undefined') {
           observableState.setObservableValues(observableState.getObservableValue())
@@ -530,8 +543,8 @@ const so = (function () {
           // Cria array com todas as dependências recebidas por parâmetro.
           // Verifica se as dependências possuem a propriedade subscribe e se são funções.
           const _dependencesSubscriptions = dependencies.map(dep => {
-            return Object.prototype.hasOwnProperty.call(dep, 'subscribe') &&
-            typeof dep.subscribe === 'function' &&
+            return functions.hasProperty(dep, 'subscribe') &&
+            typeof functions.isFunction(dep.subscribe) &&
             dep.subscribe(setObservableComputedValue)
           })
           return _dependencesSubscriptions
@@ -545,7 +558,7 @@ const so = (function () {
       if (newParamValue.length === 0) {
         return observableArrayState.getElements()
       }
-      if (typeof newParamValue === 'function') {
+      if (functions.isFunction(newParamValue)) {
         return newParamValue(observableArrayState.getElements())
       }
 
