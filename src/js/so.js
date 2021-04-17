@@ -434,7 +434,7 @@ const so = (function () {
       return Reflect.has(target, property)
     },
     typeCheck (type) {
-      const stringType = Object.prototype.toString.call(type)
+      const stringType = Reflect.apply(Object.prototype.toString, type, [])
       return stringType.substring(
         stringType.indexOf(' ') + 1,
         stringType.indexOf(']')
@@ -447,8 +447,8 @@ const so = (function () {
   // Utilitários de middleware
   const middlewareTools = {
     createMiddlewareFnNext ({ observableState, newParameterValue }) {
-      return function (middlewareValue) {
-        observableState.setObservableValues(middlewareValue || newParameterValue)
+      return function middlewareFnNext (middlewareValue) {
+        observableState.setObservableValues(middlewareValue ?? newParameterValue)
         return observableState.getObservableValue()
       }
     },
@@ -502,7 +502,7 @@ const so = (function () {
       element.subscribe(notifyAll)
     },
     createObservableArrayElement ({ observableArrayState, elements, notifyAll }) {
-      if (typeof elements === 'undefined' || elements.length === 0) {
+      if (functions.typeCheck(elements) === 'undefined' || elements.length === 0) {
         return []
       }
       elements.forEach(element =>
@@ -542,17 +542,17 @@ const so = (function () {
         createDependenciesState () {
           // Cria array com todas as dependências recebidas por parâmetro.
           // Verifica se as dependências possuem a propriedade subscribe e se são funções.
-          const _dependencesSubscriptions = dependencies.map(dep => {
+          const dependencesSubscriptions = dependencies.map(dep => {
             return functions.hasProperty(dep, 'subscribe') &&
             typeof functions.isFunction(dep.subscribe) &&
             dep.subscribe(setObservableComputedValue)
           })
-          return _dependencesSubscriptions
+          return dependencesSubscriptions
         }
       }
     },
     observableArray ({ observableArrayState, subscribersState, newParamValue, notifyObservableArray }) {
-      if (typeof newParamValue === 'undefined') {
+      if (functions.typeCheck(newParamValue) === 'undefined') {
         return observableArrayState.getElements()
       }
       if (newParamValue.length === 0) {
@@ -640,7 +640,7 @@ const so = (function () {
         getSubscribers: subscribersState.getSubscribers
       })
       // Inicializa a construção do Computed Observable
-      const _dependencesSubscriptions = initialize.computedObservable({
+      const dependenciesSubscriptions = initialize.computedObservable({
         dependencies,
         observableState: computedObservableState
       }).createDependenciesState()
@@ -659,7 +659,7 @@ const so = (function () {
           props.createComputedObservableProps({
             subscribersState,
             observableState: computedObservableState,
-            subscriptionsDependencies: _dependencesSubscriptions
+            subscriptionsDependencies: dependenciesSubscriptions
           })
         )
       )
